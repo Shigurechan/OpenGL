@@ -1,16 +1,18 @@
-#include "Test.hpp"
+#include "Shader.hpp"
 
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
-Test::Test()
-{
 
+//コンストラクタ
+Shader::Shader(const char* vert, const char* frag)
+{
+	program = loadProgram(vert,frag);
 }
 
 //シェーダーをロード
-GLuint Test::loadProgram(const char* vert, const char* frag)
+GLuint Shader::loadProgram(const char* vert, const char* frag)
 {
 	std::vector<GLchar> vsrc;
 	const bool vstat = ReadShaderSource(vert, vsrc);
@@ -31,7 +33,7 @@ GLuint Test::loadProgram(const char* vert, const char* frag)
 
 
 //シェーダーファイルを読み込む
-bool Test::ReadShaderSource(const char* name, std::vector<GLchar>& buffer)
+bool Shader::ReadShaderSource(const char* name, std::vector<GLchar>& buffer)
 {
 	if (name == NULL)
 	{
@@ -43,15 +45,18 @@ bool Test::ReadShaderSource(const char* name, std::vector<GLchar>& buffer)
 	if (file.fail())
 	{
 		std::cerr << "ソースファイルが読み込めません: " << name << std::endl;
+		file.close();
 		return false;
 	}
 
 	file.seekg(0L, std::ios::end);
 	GLsizei length = static_cast<GLsizei>(file.tellg());
 	buffer.resize(length + 1);
-	file.seekg(0L, std::ios::beg);
-	buffer[length] = '\0';
 
+	file.seekg(0L, std::ios::beg);
+	file.read(buffer.data(), length);
+	buffer[length] = '\0';
+	
 	if (file.fail())
 	{
 		std::cerr << "ソースファイルを読み込めません: " << name << std::endl;
@@ -67,7 +72,7 @@ bool Test::ReadShaderSource(const char* name, std::vector<GLchar>& buffer)
 
 
 //エラーログを取得
-GLboolean Test::InfoLog(GLuint shader, const char* str)
+GLboolean Shader::InfoLog(GLuint shader, const char* str)
 {
 	GLint status;
 
@@ -100,12 +105,13 @@ GLboolean Test::InfoLog(GLuint shader, const char* str)
 
 
 //プログラムオブジェクト作成
-GLuint Test::CreateProgram(const char* vsrc, const char* fsrc)
+GLuint Shader::CreateProgram(const char* vsrc, const char* fsrc)
 {
-	const GLuint program(glCreateProgram());
+	const GLuint program = glCreateProgram();
+
 	if (vsrc != NULL)
 	{
-		const GLuint vobj(glCreateShader(GL_VERTEX_SHADER));
+		const GLuint vobj = glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vobj, 1, &vsrc, NULL);
 		glCompileShader(vobj);
 
@@ -121,54 +127,77 @@ GLuint Test::CreateProgram(const char* vsrc, const char* fsrc)
 
 	if (fsrc != NULL)
 	{
-		const GLuint fobj(glCreateShader(GL_VERTEX_SHADER));
+		const GLuint fobj = glCreateShader(GL_FRAGMENT_SHADER);
 		glShaderSource(fobj, 1, &fsrc, NULL);
 		glCompileShader(fobj);
 
-		InfoLog(fobj, "fsrc");
+		InfoLog(fobj, fsrc);
 
 		glAttachShader(program, fobj);
 		glDeleteShader(fobj);
 	}
 	else {
-		//std::cout << "フラグメントシェーダー読み込み失敗" << std::endl;
+		std::cout << "フラグメントシェーダー読み込み失敗" << std::endl;
 
 	}
 
 
-	glBindAttribLocation(program, 0, "Position");
-	glBindFragDataLocation(program, 0, "fragment");
 	glLinkProgram(program);
 
 
 	return program;
 }
 
-void Test::Update()
+//頂点シェーダーに属性変数を関連ずける
+void Shader::setBindAttribVertex(int num, const char* str)
 {
+	glBindAttribLocation(program, num, str);
 
+
+}
+
+
+//フラグメントシェーダーに属性変数を関連ずける
+void Shader::setBindAttribFragment(int num, const char* str)
+{
+	glBindFragDataLocation(program, num, str);
+}
+
+//有効にする
+void Shader::Active()
+{
+	glUseProgram(program);
+
+
+}
+
+
+//vector2 float
+void Shader::setUniform2fv(const char* name, const glm::vec2 vec)
+{
+	const GLuint object = glGetUniformLocation(program, name);
+
+	GLfloat v[2] = { vec.x,vec.y };
+	glUniform2fv(object, 1, v);
+
+}
+
+//float 1
+void Shader::setUniform1f(const char* name, const float vec)
+{
+	const GLuint object = glGetUniformLocation(program, name);
+	
+	
+	glUniform1f(object,vec);
+	
 }
 
 
 
 
-void Test::Draw() 
-{
-	
-	
-}
 
-
-
-
-
-
-
-
-
-
-
-Test::~Test()
+//デストラクタ
+Shader::~Shader()
 {
 
 }
