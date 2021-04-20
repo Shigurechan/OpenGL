@@ -10,27 +10,29 @@
 class Window
 {
 public:
-	Window(int width = 640, int height = 480, const char* title = "Hello!");
-	virtual ~Window();
 
-	explicit operator bool();
+	Window(int width = 640, int height = 480, const char* title = "Hello!");	//コンストラクタ
+	virtual ~Window();															//デストラクタ
+
+	explicit operator bool();	//bool 演算子
 	void SwapBuffers()const;	//ダブルバッファリング
-	static void Resize(GLFWwindow* const window, int width, int height);	//サイズ変更
-	const glm::vec2 getSize() const;
-	GLfloat getScale() const;
-	const glm::vec2 getLocation()const;
-	static void Wheel(GLFWwindow* win, double x, double y);
 
-	GLfloat scale;		//ワールド座標系に対するデバイス座標系の拡大率
+	
+
+	//イベント処理
+	static void Resize(GLFWwindow* const win, int width, int height);						//サイズ変更
+	
+
+	const glm::vec2 getSize() const;		//サイズを取得
+	const int getKeyInput(int key)const;	//キー入力を取得
 
 private:
 
 	GLFWwindow *const window;	//ウインドウコンテキスト
 
-	glm::vec2 size;		//ウインドサイズ
-	glm::vec2 location;	//図形の正規化デバイス座標上での位置
-
-
+	
+	glm::vec2 size;				//ウインドサイズ
+	
 };
 
 #endif

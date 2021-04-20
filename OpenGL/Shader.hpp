@@ -21,8 +21,10 @@ public:
 	void setBindAttribVertex(int num, const char* str);		//頂点シェーダーに属性変数を関連ずける
 	void setBindAttribFragment(int num,const char* str);	//フラグメントシェーダーに属性変数を関連ずける
 
-	void setUniform2fv(const char* name, const glm::vec2 vec);
 	void setUniform1f(const char* name,const float vec);
+	void setUniform2fv(const char* name, const glm::vec2 vec);
+
+
 
 private:
 

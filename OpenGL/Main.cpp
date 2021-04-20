@@ -6,19 +6,9 @@
 #include <glew/include/GL/glew.h>
 #include <glfw/include/GLFW/glfw3.h>
 
-
-
 #include "Window.hpp"
-#include "Shape.hpp"
 #include "Shader.hpp"
-
-Object::Vertex rectangleVertex[4] =
-{
-	{-0.5f,-0.5f},
-	{0.5f,-0.5f},
-	{0.5f,0.5f},
-	{-0.5f,0.5f}
-};
+#include "DrawTest.hpp"
 
 
 int main()
@@ -29,9 +19,8 @@ int main()
 		return -1;
 	}
 
-
 	atexit(glfwTerminate);	//プログラム終了時の処理を登録
-	Window window;
+	Window window;			//コンテキストを作成
 
 	//OpenGL Verison 3.2 Core Profile　を選択する
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
@@ -39,26 +28,33 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
-	Shape* shape = new Shape(2, 4, rectangleVertex);
-	
+	glClearColor(1.0, 0.0, 0.0, 1.0);	//背景色
+// #############################################################################
+
+	DrawTest test;
+
+
 	Shader shader("Test.vert","Test.frag");
+
 	shader.setBindAttribVertex(0, "Position");
+	shader.setBindAttribVertex(1, "fragColor");
+
 	shader.setBindAttribFragment(0, "fragment");
 
 
-	glClearColor(1.0, 0.0, 0.0, 1.0);	//背景色
 	while (window)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);	//カラーバッファをクリア
 		shader.Active();
+		
+		test.Draw();
+		
 
-		shader.setUniform2fv("location",window.getLocation());
-		shader.setUniform1f("scale",window.getScale());
-		shader.setUniform2fv("size",window.getSize());
+		
 
 
 
-		shape->Draw();
+
 
 		window.SwapBuffers();	//ダブルバッファリング
 	}

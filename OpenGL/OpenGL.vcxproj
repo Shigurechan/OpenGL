@@ -163,6 +163,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DrawTest.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Shape.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DrawTest.hpp" />
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="Shape.hpp" />
     <ClInclude Include="Shader.hpp" />
