@@ -6,8 +6,8 @@ Window::Window(int width, int height, const char* title)
 {
 
 	//‰Šú‰»
-	std::fill(std::begin(keyStatus),std::end(keyStatus),0);
-	wheel = 0;
+	//std::fill(std::begin(keyStatus),std::end(keyStatus),0);
+	//wheel = 0;
 
 	if (window == NULL)
 	{
@@ -62,7 +62,7 @@ const glm::vec2 Window::getSize() const
 //ƒL[“ü—Í‚ğæ“¾
 const int Window::getKeyInput(int key)const
 {
-	return keyStatus[key];
+	return 0;//keyStatus[key];
 }
 
 
@@ -75,7 +75,7 @@ Window::operator bool()
 	GLenum err;
 	while ((err = glGetError()) != GL_NO_ERROR)
 	{	
-		std::cout << std::hex << err << std::endl;
+		std::cout <<"glGetError(): 0x"<< std::hex << err << std::endl;
 	}
 
 

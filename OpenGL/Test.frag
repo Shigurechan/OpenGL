@@ -1,7 +1,11 @@
+#version 330 core
+
+in vec4 vfragment;
 out vec4 fragment;
 
-in vec4 vfragColor;	//’¸“_ƒJƒ‰[
+
 void main()
 {
-	fragment = vfragColor;
+//	fragment = vec4(0.0,0.0,1.0,1.0);
+	fragment = vfragment;
 }

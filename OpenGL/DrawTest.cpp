@@ -3,6 +3,8 @@
 //コンストラクタ
 DrawTest::DrawTest()
 {
+
+
 	//頂点座標
 	Vertex rectangleVertex[4] =
 	{
@@ -13,8 +15,6 @@ DrawTest::DrawTest()
 		{-0.5f,0.5f ,   0.0,0.0,1.0,1.0}
 	};
 
-
-
 	//vao
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -23,20 +23,16 @@ DrawTest::DrawTest()
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-
-
 	//頂点
 	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex), rectangleVertex, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 2, GL_FLOAT,GL_FALSE, 4 * sizeof(Vertex), (GLvoid*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT,GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
 	//頂点カラー
 	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex), rectangleVertex, GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(Vertex),(GLvoid*)(2 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) (2 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-
-
-
+	
 }
 
 //更新

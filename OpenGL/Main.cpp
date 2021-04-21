@@ -24,7 +24,7 @@ int main()
 
 	//OpenGL Verison 3.2 Core Profile　を選択する
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,2);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
@@ -37,14 +37,14 @@ int main()
 	Shader shader("Test.vert","Test.frag");
 
 	shader.setBindAttribVertex(0, "Position");
-	shader.setBindAttribVertex(1, "fragColor");
+	shader.setBindAttribVertex(1, "fragment");
 
 	shader.setBindAttribFragment(0, "fragment");
 
 
 	while (window)
 	{
-		glClear(GL_COLOR_BUFFER_BIT);	//カラーバッファをクリア
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//カラーバッファをクリア
 		shader.Active();
 		
 		test.Draw();
