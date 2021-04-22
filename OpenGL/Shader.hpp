@@ -18,11 +18,14 @@ public:
 	~Shader();	//デストラクタ
 
 	void Active();	//有効にする。
-	void setBindAttribVertex(int num, const char* str);		//頂点シェーダーに属性変数を関連ずける
-	void setBindAttribFragment(int num,const char* str);	//フラグメントシェーダーに属性変数を関連ずける
+	void setBindAttribVertex(const char* str);		//頂点シェーダーに属性変数を関連ずける
+	void setBindAttribFragment(const char* str);	//フラグメントシェーダーに属性変数を関連ずける
+
 
 	void setUniform1f(const char* name,const float vec);
 	void setUniform2fv(const char* name, const glm::vec2 vec);
+	void setUniform3fv(const char* name, const glm::vec3 vec);
+	void setUniform4fv(const char* name, const glm::vec4 vec);
 
 
 

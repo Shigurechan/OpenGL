@@ -9,6 +9,14 @@
 Shader::Shader(const char* vert, const char* frag)
 {
 	program = loadProgram(vert,frag);
+	if (program == 0)
+	{
+		std::cerr << "シェーダープログラム作成エラー"<<std::endl;
+		exit(1);
+	}
+
+	//std::cout<< program << std::endl;
+
 }
 
 //シェーダーをロード
@@ -107,7 +115,8 @@ GLboolean Shader::InfoLog(GLuint shader, const char* str)
 //プログラムオブジェクト作成
 GLuint Shader::CreateProgram(const char* vsrc, const char* fsrc)
 {
-	const GLuint program = glCreateProgram();
+	const GLuint program = glCreateProgram();	//シェーダープログラムを作成
+	//std::cout << program << std::endl;
 
 	if (vsrc != NULL)
 	{
@@ -141,58 +150,83 @@ GLuint Shader::CreateProgram(const char* vsrc, const char* fsrc)
 
 	}
 
-
 	glLinkProgram(program);
-
 
 	return program;
 }
 
 //頂点シェーダーに属性変数を関連ずける
-void Shader::setBindAttribVertex(int num, const char* str)
+void Shader::setBindAttribVertex(const char* str)
 {
-	glBindAttribLocation(program, num, str);
+	GLint n = glGetAttribLocation(program, str);
 
-
+	//エラー処理
+	if (n == -1)
+	{
+		std::cerr <<"setBindAttribVertex(): "<< n << std::endl;
+	}
+	else 
+	{
+		glBindAttribLocation(program, n, str);
+	}
 }
 
 
 //フラグメントシェーダーに属性変数を関連ずける
-void Shader::setBindAttribFragment(int num, const char* str)
+void Shader::setBindAttribFragment(const char* str)
 {
-	glBindFragDataLocation(program, num, str);
+	GLint n = glGetAttribLocation(program, str);
+
+	//エラー処理
+	if (n == -1)
+	{
+		std::cerr << "setBindAttribFragment(): " << n << std::endl;
+	}
+	else 
+	{
+		glBindFragDataLocation(program, n, str);
+	}
 }
 
 //有効にする
 void Shader::Active()
 {
 	glUseProgram(program);
-
-
 }
 
+//　######################################################### Uniform 設定
 
-//vector2 float
-void Shader::setUniform2fv(const char* name, const glm::vec2 vec)
-{
-	const GLuint object = glGetUniformLocation(program, name);
-
-	GLfloat v[2] = { vec.x,vec.y };
-	glUniform2fv(object, 1, v);
-
-}
-
-//float 1
+//vec1
 void Shader::setUniform1f(const char* name, const float vec)
 {
 	const GLuint object = glGetUniformLocation(program, name);
-	
-	
-	glUniform1f(object,vec);
-	
+	glUniform1f(object, vec);
 }
 
+//vec2
+void Shader::setUniform2fv(const char* name, const glm::vec2 vec)
+{
+	const GLuint object = glGetUniformLocation(program, name);
+	GLfloat v[2] = { vec.x,vec.y };
+	glUniform2fv(object, 1, v);
+}
 
+//vec3
+void Shader::setUniform3fv(const char* name, const glm::vec3 vec)
+{
+	const GLuint object = glGetUniformLocation(program, name);
+	GLfloat v[3] = { vec.x,vec.y,vec.z };
+	glUniform3fv(object, 1, v);
+}
+
+//vec 4
+void Shader::setUniform4fv(const char* name, const glm::vec4 vec)
+{	
+	const GLuint object = glGetUniformLocation(program,name);
+	GLfloat v[4] = { vec.x,vec.y,vec.z,vec.w };
+	glUniform4fv(object,1,v);
+
+}
 
 
 

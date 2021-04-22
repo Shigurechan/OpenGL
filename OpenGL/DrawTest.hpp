@@ -15,11 +15,6 @@ public:
 
 private:
 	
-	struct Vertex
-	{
-		GLfloat position[2];
-		GLfloat color[4];
-	};
 
 	GLuint vao;	//VertexArrayObject
 	GLuint vbo;	//VertexBufferObject

@@ -31,17 +31,18 @@ int main()
 	glClearColor(1.0, 0.0, 0.0, 1.0);	//背景色
 // #############################################################################
 
-	DrawTest test;
 
+	DrawTest test;	//表示オブジェクト
 
 	Shader shader("Test.vert","Test.frag");
 
-	shader.setBindAttribVertex(0, "Position");
-	shader.setBindAttribVertex(1, "fragment");
+	//shader.setBindAttribVertex("position");
 
-	shader.setBindAttribFragment(0, "fragment");
+	//shader.setBindAttribVertex("fragment");
 
+	//shader.setBindAttribFragment("out_fragment");
 
+	//shader.setUniform4fv();
 	while (window)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//カラーバッファをクリア
@@ -49,7 +50,8 @@ int main()
 		
 		test.Draw();
 		
-
+		//std::cout << "ああああ: " << window.getKeyInput(GLFW_KEY_SPACE) << std::endl;
+		std::cout << "ああああ: " << window.keyinput(GLFW_KEY_SPACE) << std::endl;
 		
 
 

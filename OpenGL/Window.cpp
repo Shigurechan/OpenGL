@@ -4,10 +4,8 @@
 Window::Window(int width, int height, const char* title)
 	:window(glfwCreateWindow(width, height, title, NULL, NULL))	
 {
+	std::fill(std::begin(keyBoard), std::end(keyBoard), 0);
 
-	//初期化
-	//std::fill(std::begin(keyStatus),std::end(keyStatus),0);
-	//wheel = 0;
 
 	if (window == NULL)
 	{
@@ -31,7 +29,7 @@ Window::Window(int width, int height, const char* title)
 	//イベント処理
 	glfwSetWindowUserPointer(window, this);		//このインスタンスのthis
 	glfwSetWindowSizeCallback(window, Resize);	//ウインドウサイズを変更する時に呼び出す処理
-	
+	glfwSetKeyCallback(window, KeyBoard);		//キーボードが押された時
 	Resize(window, width, height);	//リサイズ
 
 }
@@ -52,6 +50,41 @@ void Window::Resize(GLFWwindow* const win, int width, int height)
 	}
 }
 
+//キー入力
+void Window::KeyBoard(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	Window* const instance = (Window*)glfwGetWindowUserPointer(window);
+
+	if (instance != NULL)
+	{	
+		if (instance->keyBoard[key] == 0 && action == GLFW_PRESS) {
+			instance->keyBoard[key] = 1;
+			printf("押した瞬間\n");
+		}
+		else if (instance->keyBoard[key] > 1 && action == GLFW_REPEAT) {
+			instance->keyBoard[key] = 2;
+
+			printf("押しているとき間\n");
+		}
+		else if (instance->keyBoard[key] != 0 && action == GLFW_RELEASE) {
+			instance->keyBoard[key] = 0;
+
+			printf("離した時\n");
+		}
+
+	}
+}
+int Window::keyinput(int key)
+{
+	return keyBoard[key];
+}
+
+
+
+
+
+
+
 //ウインドウサイズを取得
 const glm::vec2 Window::getSize() const 
 {
@@ -60,9 +93,24 @@ const glm::vec2 Window::getSize() const
 
 
 //キー入力を取得
-const int Window::getKeyInput(int key)const
+const int Window::getKeyInput(int input)
 {
-	return 0;//keyStatus[key];
+	int key = glfwGetKey(window, input);
+
+	if ( key == GLFW_PRESS)
+	{
+		keyBoard[key] += 1;
+		if (keyBoard[key] > 1)
+		{
+			keyBoard[key] = 2;
+		} 
+	}
+	else if (key == GLFW_RELEASE)
+	{
+		keyBoard[key] = 0;
+	}
+
+	return keyBoard[key];
 }
 
 
@@ -75,7 +123,7 @@ Window::operator bool()
 	GLenum err;
 	while ((err = glGetError()) != GL_NO_ERROR)
 	{	
-		std::cout <<"glGetError(): 0x"<< std::hex << err << std::endl;
+	//	std::cout <<"glGetError(): 0x"<< std::hex << err << std::endl;
 	}
 
 
