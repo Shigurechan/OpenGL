@@ -21,12 +21,6 @@
     <ClCompile Include="Shader.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Shape.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -38,12 +32,6 @@
     <ClInclude Include="Shader.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Object.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Shape.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Window.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -52,10 +40,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Test.vert">
+    <None Include="Basic_2D.vert">
       <Filter>リソース ファイル</Filter>
     </None>
-    <None Include="Test.frag">
+    <None Include="Basic_2D.frag">
       <Filter>リソース ファイル</Filter>
     </None>
   </ItemGroup>

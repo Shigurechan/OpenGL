@@ -17,16 +17,24 @@ public:
 	Shader(const char* vert,const char* frag);	//コンストラクタ
 	~Shader();	//デストラクタ
 
-	void Active();	//有効にする。
+	void setEnable();	//有効にする
+	void setDisable();	//無効にする
+
 	void setBindAttribVertex(const char* str);		//頂点シェーダーに属性変数を関連ずける
 	void setBindAttribFragment(const char* str);	//フラグメントシェーダーに属性変数を関連ずける
 
 
-	void setUniform1f(const char* name,const float vec);
-	void setUniform2fv(const char* name, const glm::vec2 vec);
-	void setUniform3fv(const char* name, const glm::vec3 vec);
-	void setUniform4fv(const char* name, const glm::vec4 vec);
+	//Uniform 設定
+	void setUniform1f(const char* name, const float vec);
+	void setUniform2f(const char* name, const glm::vec2 vec);
+	void setUniform3f(const char* name, const glm::vec3 vec);
+	void setUniform4f(const char* name, const glm::vec4 vec);
 
+	//Unform行列　設定
+	void setUniformMatrix2fv(const char* name, const glm::mat2 m);
+	void setUniformMatrix3fv(const char* name, const glm::mat3 m);
+	void setUniformMatrix4fv(const char* name, const glm::mat4 m);
+	
 
 
 private:

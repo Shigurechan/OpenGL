@@ -1,4 +1,3 @@
-//#define GLEW_STATIC	//スタティックリンク
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -20,11 +19,11 @@ int main()
 	}
 
 	atexit(glfwTerminate);	//プログラム終了時の処理を登録
-	Window window;			//コンテキストを作成
+	std::shared_ptr<Window> window = std::make_shared<Window>();			//コンテキストを作成
 
 	//OpenGL Verison 3.2 Core Profile　を選択する
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,6);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
@@ -34,31 +33,26 @@ int main()
 
 	DrawTest test;	//表示オブジェクト
 
-	Shader shader("Test.vert","Test.frag");
+	
+	
 
-	//shader.setBindAttribVertex("position");
 
-	//shader.setBindAttribVertex("fragment");
 
-	//shader.setBindAttribFragment("out_fragment");
 
-	//shader.setUniform4fv();
-	while (window)
+	while (*window)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//カラーバッファをクリア
-		shader.Active();
 		
+
+		test.Update();
 		test.Draw();
-		
-		//std::cout << "ああああ: " << window.getKeyInput(GLFW_KEY_SPACE) << std::endl;
-		std::cout << "ああああ: " << window.keyinput(GLFW_KEY_SPACE) << std::endl;
-		
+	
 
 
 
 
 
-		window.SwapBuffers();	//ダブルバッファリング
+		window->SwapBuffers();	//ダブルバッファリング
 	}
 
 }

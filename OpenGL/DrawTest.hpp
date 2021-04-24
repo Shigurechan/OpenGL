@@ -1,9 +1,11 @@
 #ifndef ___DRAWTEST_HPP
 #define ___DRAWTEST_HPP
 
+
 #include <iostream>
 #include <glew/include/GL/glew.h>
 
+class Shader;
 class DrawTest
 {
 public:
@@ -15,6 +17,8 @@ public:
 
 private:
 	
+	std::shared_ptr<Shader> shader;	//シェーダークラス
+
 
 	GLuint vao;	//VertexArrayObject
 	GLuint vbo;	//VertexBufferObject

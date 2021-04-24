@@ -19,13 +19,11 @@ public:
 
 	
 	const int getKeyInput(int input);	//キー入力
-	int keyinput(int key);
-
+	
 
 
 	//イベント処理
 	static void Resize(GLFWwindow* const win, int width, int height);						//サイズ変更
-	static void KeyBoard(GLFWwindow* window, int key, int scancode, int action, int mods);	//キー入力
 
 	const glm::vec2 getSize() const;		//サイズを取得
 	
@@ -35,7 +33,7 @@ private:
 
 	
 	glm::vec2 size;				//ウインドサイズ
-	int	keyBoard[256];			//キー入力
+	char keyBoard[256];			//キー入力
 };
 
 #endif

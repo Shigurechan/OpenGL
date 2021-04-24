@@ -29,7 +29,6 @@ Window::Window(int width, int height, const char* title)
 	//イベント処理
 	glfwSetWindowUserPointer(window, this);		//このインスタンスのthis
 	glfwSetWindowSizeCallback(window, Resize);	//ウインドウサイズを変更する時に呼び出す処理
-	glfwSetKeyCallback(window, KeyBoard);		//キーボードが押された時
 	Resize(window, width, height);	//リサイズ
 
 }
@@ -50,47 +49,11 @@ void Window::Resize(GLFWwindow* const win, int width, int height)
 	}
 }
 
-//キー入力
-void Window::KeyBoard(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	Window* const instance = (Window*)glfwGetWindowUserPointer(window);
-
-	if (instance != NULL)
-	{	
-		if (instance->keyBoard[key] == 0 && action == GLFW_PRESS) {
-			instance->keyBoard[key] = 1;
-			printf("押した瞬間\n");
-		}
-		else if (instance->keyBoard[key] > 1 && action == GLFW_REPEAT) {
-			instance->keyBoard[key] = 2;
-
-			printf("押しているとき間\n");
-		}
-		else if (instance->keyBoard[key] != 0 && action == GLFW_RELEASE) {
-			instance->keyBoard[key] = 0;
-
-			printf("離した時\n");
-		}
-
-	}
-}
-int Window::keyinput(int key)
-{
-	return keyBoard[key];
-}
-
-
-
-
-
-
-
 //ウインドウサイズを取得
 const glm::vec2 Window::getSize() const 
 {
 	return size;
 }
-
 
 //キー入力を取得
 const int Window::getKeyInput(int input)
@@ -119,12 +82,24 @@ Window::operator bool()
 {
 	glfwPollEvents();	//イベントを取り出す
 
+
+#define DEBUG 1
+#ifndef DEBUG
 	//エラー処理
 	GLenum err;
 	while ((err = glGetError()) != GL_NO_ERROR)
 	{	
-	//	std::cout <<"glGetError(): 0x"<< std::hex << err << std::endl;
+		std::cout <<"glGetError(): 0x"<< std::hex << err << std::endl;
 	}
+#endif;
+
+
+	//ESCキーで終了
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == 1)
+	{
+		exit(1);
+	}
+
 
 
 
