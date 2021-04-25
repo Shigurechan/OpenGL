@@ -34,7 +34,14 @@ public:
 	void setUniformMatrix2fv(const char* name, const glm::mat2 m);
 	void setUniformMatrix3fv(const char* name, const glm::mat3 m);
 	void setUniformMatrix4fv(const char* name, const glm::mat4 m);
+
+	void setUniformMatrix3fv_test(const char* name, const float m[9])
+	{
+		const GLuint object = glGetUniformLocation(program, name);
+		glUniformMatrix3fv(object, 1, false, m);
+	}
 	
+
 
 
 private:

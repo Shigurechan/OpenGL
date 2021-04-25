@@ -235,7 +235,7 @@ void Shader::setUniform3f(const char* name, const glm::vec3 vec)
 	glUniform3f(object,vec.x, vec.y,vec.z);
 }
 
-//vec 4
+//vec4
 void Shader::setUniform4f(const char* name, const glm::vec4 vec)
 {	
 	const GLuint object = glGetUniformLocation(program,name);
@@ -254,15 +254,14 @@ void Shader::setUniformMatrix2fv(const char* name, const glm::mat2 m)
 void Shader::setUniformMatrix3fv(const char* name, const glm::mat3 m)
 {
 	const GLuint object = glGetUniformLocation(program, name);
-	glUniformMatrix2fv(object, 1, false, glm::value_ptr(m));
-
+	glUniformMatrix3fv(object, 1, false, glm::value_ptr(m));
 }
 
 //çsóÒ4
 void Shader::setUniformMatrix4fv(const char* name, const glm::mat4 m)
 {
 	const GLuint object = glGetUniformLocation(program, name);
-	glUniformMatrix2fv(object, 1, false, glm::value_ptr(m));
+	glUniformMatrix4fv(object, 1, false, glm::value_ptr(m));
 
 }
 

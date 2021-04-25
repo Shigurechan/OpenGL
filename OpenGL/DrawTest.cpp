@@ -4,6 +4,7 @@
 #include "Shader.hpp"
 #include <glm/gtx/matrix_transform_2d.hpp>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 //コンストラクタ
 DrawTest::DrawTest()
@@ -39,9 +40,8 @@ DrawTest::DrawTest()
 
 	//頂点
 	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex), rectangleVertex, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 2, GL_FLOAT,GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT,GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
-	shader->setBindAttribVertex("position");
 
 
 
@@ -57,22 +57,29 @@ DrawTest::DrawTest()
 
 
 	//スケール
-	glm::mat3 Scale = glm::mat3();
-	Scale = glm::scale(Scale, glm::vec2(1, 1));
+	scale = glm::scale(scale, glm::vec2(1, 1));
 
-	//回転
-	glm::mat3 Rotate = glm::mat3();
-	Rotate = glm::rotate(Rotate, 1.0f);
+	//回転	
+	rotate = glm::rotate(rotate, 1.0f);
 
-	//平行移動
-	glm::mat3 Translate = glm::mat3();
-	Translate = glm::translate(Translate, glm::vec2(1, 1));
+	//平行移動	
+	translate = glm::translate(translate, glm::vec2(1, 1));
 
-	glm::mat3 simpleView = glm::mat3();
 	
-	simpleView;
+	sv[0] = 2.0f / 640.0f;
+	sv[1] = 0.0f;
+	sv[2] = 0.0f;
+
+	sv[3] = 0.0f;
+	sv[4] = 2.0f / 480.0f;
+	sv[5] = 0.0f;
+
+	sv[6] = 0.0f;
+	sv[7] = 0.0f;
+	sv[8] = 1.0f;
 
 
+//	simpleView = glm::value_ptr(sv);
 
 
 
@@ -96,7 +103,15 @@ void DrawTest::Draw()
 	shader->setEnable();
 
 
-	shader->setUniform4f("ufragment", glm::vec4(0.0, 1.0, 0.0, 1.0));
+	shader->setUniform4f("uFragment", glm::vec4(0.0, 0.0, 1.0, 1.0));
+	shader->setUniformMatrix3fv("uScale", scale);
+	shader->setUniformMatrix3fv("uRotate", rotate);
+	shader->setUniformMatrix3fv("uTranslate", translate);
+//	shader->setUniformMatrix3fv("uSimpleView", simpleView);
+
+	shader->setUniformMatrix3fv_test("uSimpleView", sv);
+	shader->setBindAttribVertex("position");
+
 
 
 
@@ -109,7 +124,6 @@ void DrawTest::Draw()
 DrawTest::~DrawTest()
 {
 	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
-
+	glDeleteBuffers(1, &vbo);	
 }
 
