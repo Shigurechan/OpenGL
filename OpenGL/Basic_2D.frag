@@ -9,8 +9,5 @@ out vec4 fragment;
 
 void main()
 {
-
 	fragment = vfragment;
-	//fragment = vec4(0.0,0.0,1.0,1.0);
-
 }

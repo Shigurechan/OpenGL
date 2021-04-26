@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
 //ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 DrawTest::DrawTest()
 {
@@ -18,13 +19,18 @@ DrawTest::DrawTest()
 	};
 
 	//’¸“_î•ñ
-	Vertex rectangleVertex[4] =
+	Vertex rectangleVertex[6] =
 	{
 		//’¸“_A’¸“_F
+		{-0.5f,0.5f},
+		{-0.5f,-0.5f},
+		{0.5f,0.5f},
+
+		{0.5f,0.5f},
 		{-0.5f,-0.5f},
 		{0.5f,-0.5f},
-		{0.5f,0.5f},
-		{-0.5f,0.5f}
+
+
 	};
 
 	//vao
@@ -35,46 +41,38 @@ DrawTest::DrawTest()
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-
-
 	//’¸“_	
 	GLint attrib = shader->getAttribLocation("vertexPosition");
 	glEnableVertexAttribArray(attrib);
-	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex), rectangleVertex, GL_STATIC_DRAW);
-	glVertexAttribPointer(attrib, 2, GL_FLOAT,GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(Vertex), rectangleVertex, GL_STATIC_DRAW);
+	glVertexAttribPointer(attrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
 	shader->setBindAttribVertex("vertexPosition");
 
 
 	//ƒ‚ƒfƒ‹s—ñ
-	translate = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -5.0f));	//•½sˆÚ“®
-	rotate = glm::rotate(0.0f, glm::vec3(0.0f, 0.0f, 0.0f));				//‰ñ“]
-	scale = glm::scale(glm::mat4(), glm::vec3(1.0f, 1.0f, 1.0f));			//Šg‘åk¬
+	vecScale = glm::vec3(1.0f, 1.0f, 1.0f);			//Šg‘åk¬
+	vecRotate = glm::vec3(1.0f, 1.0f, 1.0f);		//‰ñ“]
+	angle = 0.0f;									//‰ñ“]—Ê
+	vecTranslate = glm::vec3(0.0f, 0.0f, 0.0f);		//•½sˆÚ“®
+	translate = glm::translate(glm::mat4(1), vecTranslate);	//•½sˆÚ“®
+	rotate = glm::rotate(angle, vecRotate);					//‰ñ“]
+	scale = glm::scale(glm::mat4(1), vecScale);				//Šg‘åk¬
 
 	//ƒrƒ…[
-	glm::vec3 pos = glm::vec3(0, 0, 50);
-	glm::vec3 center = glm::vec3(0, 0, -1);
-	glm::vec3 up = glm::vec3(0,1,0);
-
-	view = glm::lookAt(pos,center,up);	
-
-	//“§Ž‹ŽËŒ`
-	projection = glm::perspective(glm::radians(90.0f),4.0f / 3.0f ,0.1f,100.0f);
-
-	
+	glm::vec3 pos = glm::vec3(0, 0, 1);			//À•W
+	glm::vec3 center = glm::vec3(0, 0, -1);		//Œü‚«
+	glm::vec3 up = glm::vec3(0, 1, 0);			//ã•ûŒü
+	view = glm::lookAt(pos, center, up);
 
 
+	projection = glm::perspective(glm::radians(90.0f), 4.0f / 3.0f, 0.1f, 100.0f);//“§Ž‹ŽËŒ`
 
-	
 }
 
 //XV
 void DrawTest::Update()
 {
 	
-
-
-
-
 }
 
 //•`‰æ
@@ -84,6 +82,7 @@ void DrawTest::Draw()
 
 	
 	shader->setUniform4f("uFragment", glm::vec4(0.0, 0.0, 1.0, 1.0));
+
 	shader->setUniformMatrix4fv("uTranslate", translate);
 	shader->setUniformMatrix4fv("uRotate", rotate);
 	shader->setUniformMatrix4fv("uScale", scale);
@@ -96,7 +95,7 @@ void DrawTest::Draw()
 	
 
 
-	glDrawArrays(GL_LINE_LOOP, 0, 4);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	shader->setDisable();
 }
