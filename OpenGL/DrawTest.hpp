@@ -27,18 +27,15 @@ private:
 	GLuint vao;	//VertexArrayObject
 	GLuint vbo;	//VertexBufferObject
 
-	//スケール
-	glm::mat3 scale;
+	
+	glm::mat4 scale;		//拡大縮小
+	glm::mat4 rotate;		//回転
+	glm::mat4 translate;	//平行移動
+	
 
-	//回転
-	glm::mat3 rotate;
 
-	//平行移動
-	glm::mat3 translate;
-
-	//射形行列
-	float sv[9];
-	glm::mat3 simpleView;
+	glm::mat4 view;			//ビュー
+	glm::mat4 projection;	//射形
 
 
 };

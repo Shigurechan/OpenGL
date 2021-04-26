@@ -1,6 +1,7 @@
+#extension GL_ARB_explicit_attrib_location: enable 
 
-//頂点シェーダーから来たもの
-in vec4 vfragment;	
+
+layout(location = 2) in vec4 vfragment;	
 
 
 //出力
@@ -10,5 +11,6 @@ void main()
 {
 
 	fragment = vfragment;
+	//fragment = vec4(0.0,0.0,1.0,1.0);
 
 }

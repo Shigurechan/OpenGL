@@ -17,11 +17,12 @@ public:
 	Shader(const char* vert,const char* frag);	//コンストラクタ
 	~Shader();	//デストラクタ
 
-	void setEnable();	//有効にする
-	void setDisable();	//無効にする
+	void setEnable();	//有効
+	void setDisable();	//無効
 
 	void setBindAttribVertex(const char* str);		//頂点シェーダーに属性変数を関連ずける
 	void setBindAttribFragment(const char* str);	//フラグメントシェーダーに属性変数を関連ずける
+	GLint getAttribLocation(const char* str);		//locationを取得
 
 
 	//Uniform 設定
@@ -35,19 +36,14 @@ public:
 	void setUniformMatrix3fv(const char* name, const glm::mat3 m);
 	void setUniformMatrix4fv(const char* name, const glm::mat4 m);
 
-	void setUniformMatrix3fv_test(const char* name, const float m[9])
-	{
-		const GLuint object = glGetUniformLocation(program, name);
-		glUniformMatrix3fv(object, 1, false, m);
-	}
-	
 
 
 
 private:
 
 	GLuint CreateProgram(const char* vsrc, const char* fsrc);				//プログラムオブジェクトを作成
-	GLboolean InfoLog(GLuint shader,const char *str);						//エラーログを取得
+	GLboolean CompileInfoLog(GLuint shader, const char* str);				//コンパイルエラーログを取得
+	GLboolean ProgramInfoLog(GLuint program);								//プログラムログを取得
 	bool ReadShaderSource(const char* name, std::vector<GLchar>& buffer);	//ソースファイルを読み込み
 	GLuint loadProgram(const char* vert, const char* frag);					//プログラムをオブジェクトをロード
 

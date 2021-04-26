@@ -83,9 +83,8 @@ bool Shader::ReadShaderSource(const char* name, std::vector<GLchar>& buffer)
 }
 
 
-
-//エラーログを取得
-GLboolean Shader::InfoLog(GLuint shader, const char* str)
+//シェーダーエラーログを取得
+GLboolean Shader::CompileInfoLog(GLuint shader,const char* str)
 {
 	GLint status;
 
@@ -93,7 +92,7 @@ GLboolean Shader::InfoLog(GLuint shader, const char* str)
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE)
 	{
-		std::cerr << "コンパイルエラー　" << str << std::endl;
+		std::cerr <<"Compile Error: " << str << std::endl;
 	}
 	
 	//エラーログの長さを得る
@@ -130,7 +129,7 @@ GLuint Shader::CreateProgram(const char* vsrc, const char* fsrc)
 		glShaderSource(vobj, 1, &vsrc, NULL);
 		glCompileShader(vobj);
 
-		InfoLog(vobj, vsrc);
+		CompileInfoLog(vobj, vsrc);
 
 		glAttachShader(program, vobj);
 		glDeleteShader(vobj);
@@ -146,7 +145,7 @@ GLuint Shader::CreateProgram(const char* vsrc, const char* fsrc)
 		glShaderSource(fobj, 1, &fsrc, NULL);
 		glCompileShader(fobj);
 
-		InfoLog(fobj, fsrc);
+		CompileInfoLog(fobj, fsrc);
 
 		glAttachShader(program, fobj);
 		glDeleteShader(fobj);
@@ -158,11 +157,44 @@ GLuint Shader::CreateProgram(const char* vsrc, const char* fsrc)
 
 	glLinkProgram(program);
 
-
-
+	ProgramInfoLog(program);
+	
 
 	return program;
 }
+
+//プログラムのエラーを表示
+GLboolean Shader::ProgramInfoLog(GLuint program)
+{
+	GLsizei bufSize;
+	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &bufSize);
+
+	if (bufSize > 1) 
+	{
+		std::vector<GLchar> infoLog(bufSize);
+	
+		GLsizei length;
+		glGetProgramInfoLog(program, bufSize, &length, &infoLog[0]);
+		std::cerr<<"Program Info Log: "<< infoLog.data() <<std::endl;
+
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+
+
+
+//locationを取得
+GLint Shader::getAttribLocation(const char* str)
+{
+	return glGetAttribLocation(program,str);
+}
+
+
 
 //頂点シェーダーに属性変数を関連ずける
 void Shader::setBindAttribVertex(const char* str)
