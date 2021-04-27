@@ -28,22 +28,19 @@ private:
 	GLuint vbo;	//VertexBufferObject
 
 	
-	glm::vec3 vecScale;		//
-	glm::vec3 vecRotate;	//
-	float angle;			//
-	glm::vec3 vecTranslate;	//
+	//ƒpƒ‰ƒ[ƒ^
+	glm::vec3 vecScale;		//Šg‘åk¬
+	glm::vec3 vecRotate;	//‰ñ“]
+	float angle;			//‰ñ“]—Ê
+	glm::vec3 vecTranslate;	//•½sˆÚ“®
 
 
+	//•`‰æs—ñ
 	glm::mat4 scale;		//Šg‘åk¬
 	glm::mat4 rotate;		//‰ñ“]
 	glm::mat4 translate;	//•½sˆÚ“®
-	
-
-
 	glm::mat4 view;			//ƒrƒ…[
 	glm::mat4 projection;	//ËŒ`
-
-
 };
 
 #endif

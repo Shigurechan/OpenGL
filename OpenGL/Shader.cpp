@@ -155,11 +155,9 @@ GLuint Shader::CreateProgram(const char* vsrc, const char* fsrc)
 
 	}
 
-	glLinkProgram(program);
-
-	ProgramInfoLog(program);
+	glLinkProgram(program);		//リンクプログラム
+	ProgramInfoLog(program);	//リンク時のログを表示
 	
-
 	return program;
 }
 

@@ -10,7 +10,7 @@
 //コンストラクタ
 DrawTest::DrawTest()
 {
-	shader = std::make_shared<Shader>("Basic_2D.vert", "Basic_2D.frag");	//シェーダー
+	shader = std::make_shared<Shader>("BasicMono_3D.vert", "BasicMono_3D.frag");	//シェーダー
 
 	//頂点配列
 	struct Vertex
@@ -48,12 +48,13 @@ DrawTest::DrawTest()
 	glVertexAttribPointer(attrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
 	shader->setBindAttribVertex("vertexPosition");
 
-
-	//モデル行列
+	//パラメータを初期化
 	vecScale = glm::vec3(1.0f, 1.0f, 1.0f);			//拡大縮小
 	vecRotate = glm::vec3(1.0f, 1.0f, 1.0f);		//回転
 	angle = 0.0f;									//回転量
 	vecTranslate = glm::vec3(0.0f, 0.0f, 0.0f);		//平行移動
+
+	//モデル行列
 	translate = glm::translate(glm::mat4(1), vecTranslate);	//平行移動
 	rotate = glm::rotate(angle, vecRotate);					//回転
 	scale = glm::scale(glm::mat4(1), vecScale);				//拡大縮小
@@ -65,7 +66,7 @@ DrawTest::DrawTest()
 	view = glm::lookAt(pos, center, up);
 
 
-	projection = glm::perspective(glm::radians(90.0f), 4.0f / 3.0f, 0.1f, 100.0f);//透視射形
+	projection = glm::perspective(glm::radians(90.0f), 4.0f / 3.0f, 0.1f, 100.0f);	//透視射形
 
 }
 

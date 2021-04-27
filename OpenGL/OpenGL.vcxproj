@@ -174,8 +174,8 @@
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Basic_2D.frag" />
-    <None Include="Basic_2D.vert" />
+    <None Include="BasicMono_3D.frag" />
+    <None Include="BasicMono_3D.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
