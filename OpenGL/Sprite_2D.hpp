@@ -39,7 +39,7 @@ private:
 	
 
 
-
+	GLuint texID;	//テクスチャID
 	GLuint vao;	//VertexArrayObject
 	GLuint vbo;	//VertexBufferObject
 

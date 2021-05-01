@@ -17,7 +17,7 @@ public:
 	Shader();	//コンストラクタ
 	~Shader();	//デストラクタ
 
-	void Load(const char* vert,const char* frag);	//シェーダー読み込み
+	void LoadShader(const char* vert,const char* frag);	//シェーダー読み込み
 
 
 	void setEnable();	//有効

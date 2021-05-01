@@ -6,6 +6,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_Transform.hpp>
 #include <glm/gtx/Transform.hpp>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
 
 #include "Shader.hpp"
 
@@ -14,7 +16,7 @@
 Sprite_2D::Sprite_2D(std::shared_ptr<Window> w,const char* vert,const char* frag) : Transform_2D(w),Shader()
 {
 	//シェーダー読み込み
-	Load(vert, frag);	
+	LoadShader(vert, frag);	
 
 	
 	//頂点情報
@@ -57,41 +59,28 @@ Sprite_2D::Sprite_2D(std::shared_ptr<Window> w,const char* vert,const char* frag
 
 
 	// テクスチャIDの生成
-	GLuint texID;
 	glGenTextures(1, &texID);
 
 	// ファイルの読み込み
-	std::ifstream fstr("texture.png", std::ios::binary);
-	if (fstr.is_open() == true) {
-		const size_t fileSize = static_cast<size_t>(fstr.seekg(0, fstr.end).tellg());
-		fstr.seekg(0, fstr.beg);
-		char* textureBuffer = new char[fileSize];
-		fstr.read(textureBuffer, fileSize);
-		fstr.seekg(0, fstr.beg);
+	int x = 0;
+	int y = 0;
+	int channel = 0;
+	unsigned char* fileData = stbi_load("texture.png",&x,&y,&channel,0);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glBindTexture(GL_TEXTURE_2D, texID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, fileData);
 
-		//printf("さあｓｓ");
-		// テクスチャをGPUに転送
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glBindTexture(GL_TEXTURE_2D, texID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, textureBuffer);
+	// テクスチャの設定
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-		// テクスチャの設定
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	setScale(glm::vec3((float)x,(float)y,1.0f));
 
-		// テクスチャのアンバインド
-		delete[] textureBuffer;
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-	else {
-		std::cerr << "ファイルが開けません" << std::endl;
-	}
-
-
-
-
+	//アルファブレンド有効
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 }
 
@@ -103,9 +92,9 @@ void Sprite_2D::Update()
 
 //描画
 void Sprite_2D::Draw(glm::mat4 projection)
-{
-	//setEnable();
+{	
 	glBindVertexArray(vao);
+	glBindTexture(GL_TEXTURE_2D, texID);
 
 	setUniformMatrix4fv("uTranslate", translate);
 	setUniformMatrix4fv("uRotate", rotate);
@@ -114,8 +103,9 @@ void Sprite_2D::Draw(glm::mat4 projection)
 	
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
-	//setDisable();
+	
 	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 

@@ -5,10 +5,10 @@
 Transform_2D::Transform_2D(std::shared_ptr<Window> w) : Actor(w)
 {
 	//ƒpƒ‰ƒ[ƒ^‚ğ‰Šú‰»
-	vecScale = glm::vec3(100.0f, 100.0f, 1.0f);			//Šg‘åk¬
+	vecScale = glm::vec3(1.0f, 1.0f, 1.0f);			//Šg‘åk¬
 	vecRotate = glm::vec3(1.0f, 1.0f, 1.0f);		//‰ñ“]
 	angle = 0.0f;									//‰ñ“]—Ê
-	vecTranslate = glm::vec3(0.0f, 0.0f, 0.0f);		//•½sˆÚ“®
+	vecTranslate = glm::vec3(300.0f,200.0f, 0.0f);	//•½sˆÚ“®
 
 	//s—ñ‚ğ‰Šú‰»
 	scale = glm::scale(glm::mat4(1), vecScale);

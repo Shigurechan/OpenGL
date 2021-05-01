@@ -15,7 +15,7 @@ Shader::Shader()
 
 
 //シェーダーをロード
-void Shader::Load(const char* vert, const char* frag)
+void Shader::LoadShader(const char* vert, const char* frag)
 {
 	if (program != 0)
 	{
