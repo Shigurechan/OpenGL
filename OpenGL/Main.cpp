@@ -6,8 +6,9 @@
 #include <glfw/include/GLFW/glfw3.h>
 
 #include "Window.hpp"
-#include "Shader.hpp"
-#include "DrawTest.hpp"
+
+#include "Sprite_2D.hpp"
+#include "Camera.hpp"
 
 
 int main()
@@ -20,6 +21,8 @@ int main()
 
 	atexit(glfwTerminate);	//プログラム終了時の処理を登録
 	std::shared_ptr<Window> window = std::make_shared<Window>();			//コンテキストを作成
+	std::shared_ptr<Camera> camera = std::make_shared<Camera>(window);			//カメラを作成
+
 
 	//OpenGL Verison 3.2 Core Profile　を選択する
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -31,7 +34,11 @@ int main()
 // #############################################################################
 
 
-	DrawTest test;	//表示オブジェクト
+
+
+
+
+	Sprite_2D sprite(window);	//表示オブジェクト
 
 	
 	
@@ -44,8 +51,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//カラーバッファをクリア
 		
 
-		test.Update();
-		test.Draw();
+		sprite.Update();
+		sprite.Draw(camera->getViewProjection());
 	
 
 

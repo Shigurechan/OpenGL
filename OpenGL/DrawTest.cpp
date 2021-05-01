@@ -10,7 +10,7 @@
 //コンストラクタ
 DrawTest::DrawTest()
 {
-	shader = std::make_shared<Shader>("BasicMono_3D.vert", "BasicMono_3D.frag");	//シェーダー
+	shader = std::make_shared<Shader>("Shader/BasicMono_3D.vert", "Shader/BasicMono_3D.frag");	//シェーダー
 
 	//頂点配列
 	struct Vertex
@@ -80,6 +80,7 @@ void DrawTest::Update()
 void DrawTest::Draw()
 {
 	shader->setEnable();
+	glBindVertexArray(vao);
 
 	
 	shader->setUniform4f("uFragment", glm::vec4(0.0, 0.0, 1.0, 1.0));
@@ -99,6 +100,8 @@ void DrawTest::Draw()
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	shader->setDisable();
+	glBindVertexArray(0);
+
 }
 
 //デストラクタ

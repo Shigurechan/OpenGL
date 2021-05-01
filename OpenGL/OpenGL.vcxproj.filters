@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="リソース ファイル\2D">
+      <UniqueIdentifier>{24af356f-680c-4642-b4d0-ff374efe3a5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\3D">
+      <UniqueIdentifier>{a874f55c-32f5-46b0-b07a-2eaa6faf1436}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -27,6 +33,18 @@
     <ClCompile Include="DrawTest.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Sprite_2D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.hpp">
@@ -38,13 +56,31 @@
     <ClInclude Include="DrawTest.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Sprite_2D.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BasicMono_3D.vert">
-      <Filter>リソース ファイル</Filter>
+    <None Include="BasicMono_2D.frag">
+      <Filter>リソース ファイル\2D</Filter>
     </None>
-    <None Include="BasicMono_3D.frag">
-      <Filter>リソース ファイル</Filter>
+    <None Include="BasicMono_2D.vert">
+      <Filter>リソース ファイル\2D</Filter>
+    </None>
+    <None Include="Shader\BasicMono_3D.frag">
+      <Filter>リソース ファイル\3D</Filter>
+    </None>
+    <None Include="Shader\BasicMono_3D.vert">
+      <Filter>リソース ファイル\3D</Filter>
     </None>
   </ItemGroup>
 </Project>
