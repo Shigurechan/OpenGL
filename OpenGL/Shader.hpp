@@ -14,8 +14,11 @@
 class Shader
 {
 public:
-	Shader(const char* vert,const char* frag);	//コンストラクタ
+	Shader();	//コンストラクタ
 	~Shader();	//デストラクタ
+
+	void Load(const char* vert,const char* frag);	//シェーダー読み込み
+
 
 	void setEnable();	//有効
 	void setDisable();	//無効
@@ -38,8 +41,8 @@ public:
 
 
 
-
 private:
+
 
 	GLuint CreateProgram(const char* vsrc, const char* fsrc);				//プログラムオブジェクトを作成
 	GLboolean CompileInfoLog(GLuint shader, const char* str);				//コンパイルエラーログを取得

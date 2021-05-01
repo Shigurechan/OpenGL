@@ -8,21 +8,29 @@
 #include <glm/gtc/type_ptr.hpp>
 
 //コンストラクタ
-Shader::Shader(const char* vert, const char* frag)
+Shader::Shader()
 {
-	program = loadProgram(vert,frag);
-	if (program == 0)
+	program = 0;	//シェーダープログラムを初期化
+}
+
+
+//シェーダーをロード
+void Shader::Load(const char* vert, const char* frag)
+{
+	if (program != 0)
 	{
-		std::cerr << "シェーダープログラム作成エラー"<<std::endl;
-		exit(1);
+		glDeleteShader(program);
 	}
 
-
-	
-
-	//std::cout<< program << std::endl;
-
+	program = loadProgram(vert, frag);
+	if (program == 0)
+	{
+		std::cerr << "シェーダープログラム作成エラー" << std::endl;
+		exit(1);
+	}
 }
+
+
 
 //シェーダーをロード
 GLuint Shader::loadProgram(const char* vert, const char* frag)
@@ -92,7 +100,8 @@ GLboolean Shader::CompileInfoLog(GLuint shader,const char* str)
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE)
 	{
-		std::cerr <<"Compile Error: " << str << std::endl;
+		std::cerr << "コンパイルエラー" << std::endl;
+		std::cerr << str << std::endl;
 	}
 	
 	//エラーログの長さを得る
@@ -112,9 +121,6 @@ GLboolean Shader::CompileInfoLog(GLuint shader,const char* str)
 
 	return (GLboolean)status;
 }
-
-
-
 
 //プログラムオブジェクト作成
 GLuint Shader::CreateProgram(const char* vsrc, const char* fsrc)

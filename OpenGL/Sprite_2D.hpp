@@ -6,32 +6,37 @@
 #include <glew/include/GL/glew.h>
 #include <glm/glm.hpp>
 
-#include "Transform.hpp"
+#include "Transform_2D.hpp"
+#include "Shader.hpp"
 
-class Shader;
+
 class Window;
 
-class Sprite_2D : public Transform
+
+
+
+class Sprite_2D : public Transform_2D,public Shader
 {
 public:
 
 	//頂点配列
 	struct Vertex
 	{
-		GLfloat position[2];
+		GLfloat position[2];	//座標
+		GLfloat uv[2];			//UV
 	};
 
 
 
-	Sprite_2D(std::shared_ptr<Window> w);		//コンストラクタ
-	~Sprite_2D();								//デストラクタ
+	Sprite_2D(std::shared_ptr<Window> w, const char* vert, const char* frag);		//コンストラクタ
+	~Sprite_2D();																	//デストラクタ
 
 	virtual void Update();						//更新
 	virtual void Draw(glm::mat4 projection);	//描画
 
 private:
 
-	std::shared_ptr<Shader> shader;	//シェーダークラス
+	
 
 
 

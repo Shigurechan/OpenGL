@@ -10,7 +10,7 @@
 //コンストラクタ
 DrawTest::DrawTest()
 {
-	shader = std::make_shared<Shader>("Shader/BasicMono_3D.vert", "Shader/BasicMono_3D.frag");	//シェーダー
+	//shader = std::make_shared<Shader>("Shader/BasicMono_3D.vert", "Shader/BasicMono_3D.frag");	//シェーダー
 
 	//頂点配列
 	struct Vertex
@@ -32,7 +32,7 @@ DrawTest::DrawTest()
 
 
 	};
-
+	/*
 	//vao
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -46,7 +46,7 @@ DrawTest::DrawTest()
 	glEnableVertexAttribArray(attrib);
 	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(Vertex), rectangleVertex, GL_STATIC_DRAW);
 	glVertexAttribPointer(attrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
-	shader->setBindAttribVertex("vertexPosition");
+	//shader->setBindAttribVertex("vertexPosition");
 
 	//パラメータを初期化
 	vecScale = glm::vec3(1.0f, 1.0f, 1.0f);			//拡大縮小
@@ -65,7 +65,7 @@ DrawTest::DrawTest()
 	glm::vec3 up = glm::vec3(0, 1, 0);			//上方向
 	view = glm::lookAt(pos, center, up);
 
-
+	*/
 	projection = glm::perspective(glm::radians(90.0f), 4.0f / 3.0f, 0.1f, 100.0f);	//透視射形
 
 }
@@ -79,6 +79,7 @@ void DrawTest::Update()
 //描画
 void DrawTest::Draw()
 {
+	/*
 	shader->setEnable();
 	glBindVertexArray(vao);
 
@@ -101,7 +102,7 @@ void DrawTest::Draw()
 
 	shader->setDisable();
 	glBindVertexArray(0);
-
+	*/
 }
 
 //デストラクタ

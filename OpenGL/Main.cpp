@@ -38,25 +38,31 @@ int main()
 
 
 
-	Sprite_2D sprite(window);	//表示オブジェクト
+	Sprite_2D sprite(window,"Shader/BasicTexture_2D.vert","Shader/BasicTexture_2D.frag");	//表示オブジェクト
+	//sprite.Load("Shader/BasicMono_2D.vert", "Shader/BasicMono_2D.frag");
+	
 
 	
-	
-
-
 
 
 	while (*window)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//カラーバッファをクリア
 		
+		sprite.setEnable();
+
+
 
 		sprite.Update();
-		sprite.Draw(camera->getViewProjection());
+
+		sprite.setUniform4f("uFragment", glm::vec4(0.0, 0.0, 1.0, 1.0));
+
+		sprite.Draw(camera->getProjection_2D());
 	
 
 
 
+		sprite.setDisable();
 
 
 		window->SwapBuffers();	//ダブルバッファリング
