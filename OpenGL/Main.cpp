@@ -9,6 +9,7 @@
 
 #include "Sprite_2D.hpp"
 #include "Camera.hpp"
+#include "Texture.hpp"
 
 
 int main()
@@ -39,19 +40,48 @@ int main()
 
 
 	Sprite_2D sprite(window,"Shader/BasicTexture_2D.vert","Shader/BasicTexture_2D.frag");	//表示オブジェクト
+	sprite.setTexture(LoadTexture("texture.png"));
 	//sprite.Load("Shader/BasicMono_2D.vert", "Shader/BasicMono_2D.frag");
 	
 
 	
-
+	glm::vec2 pos = glm::vec2(0,0);
 
 	while (*window)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//カラーバッファをクリア
 		
+
+
+		if (window->getKeyInput(GLFW_KEY_D) > 0)
+		{
+			pos.x += 100;
+		}else if (window->getKeyInput(GLFW_KEY_A) > 0)
+		{
+			pos.x += -100;
+
+		}else if (window->getKeyInput(GLFW_KEY_W) > 0)
+		{
+			pos.y += -100;
+
+		}
+		else if (window->getKeyInput(GLFW_KEY_S) > 0)
+		{
+			pos.y += 100;
+
+		}
+
+
+
+
+
+
+		sprite.setPosition(pos);
+
 		sprite.setEnable();
 
 
+		
 
 		sprite.Update();
 

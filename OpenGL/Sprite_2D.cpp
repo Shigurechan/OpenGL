@@ -6,8 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_Transform.hpp>
 #include <glm/gtx/Transform.hpp>
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
+
 
 #include "Shader.hpp"
 
@@ -17,8 +16,8 @@ Sprite_2D::Sprite_2D(std::shared_ptr<Window> w,const char* vert,const char* frag
 {
 	//シェーダー読み込み
 	LoadShader(vert, frag);	
-
-	
+	selectID = -1;
+	Position = glm::vec2(0,0);
 	//頂点情報
 	Vertex rectangleVertex[6] =
 	{
@@ -55,9 +54,7 @@ Sprite_2D::Sprite_2D(std::shared_ptr<Window> w,const char* vert,const char* frag
 	glVertexAttribPointer(attrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(sizeof(GLfloat) * 2));
 	setBindAttribVertex("vertexUV");
 
-
-
-
+	/*
 	// テクスチャIDの生成
 	glGenTextures(1, &texID);
 
@@ -66,23 +63,101 @@ Sprite_2D::Sprite_2D(std::shared_ptr<Window> w,const char* vert,const char* frag
 	int y = 0;
 	int channel = 0;
 	unsigned char* fileData = stbi_load("texture.png",&x,&y,&channel,0);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glBindTexture(GL_TEXTURE_2D, texID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, fileData);
+	
 
+
+	glBindTexture(GL_TEXTURE_2D, texID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 800, 0, GL_RGBA, GL_UNSIGNED_BYTE, fileData);
+	
 	// テクスチャの設定
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	setScale(glm::vec3((float)x,(float)y,1.0f));
+	*/
+
+
+	
+	
+
+
+
+
+
+
+
 
 	//アルファブレンド有効
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+	//stbi_image_free(fileData);//画像データ開放
+
+
+
 }
+
+
+// ###################### メンバ関数 ###################### 
+
+//テクスチャ設定
+void Sprite_2D::setTexture(TextureData tex)
+{
+	
+	textureID.push_back(tex);
+
+	
+	glGenTextures(1, &textureID.back().ID);	//テクスチャIDの生成
+
+	//バインド
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glBindTexture(GL_TEXTURE_2D, textureID.back().ID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureID.back().size.x, textureID.back().size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureID.back().fileData);
+
+	// テクスチャの補間設定
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	setSizeScale(glm::vec3(textureID.back().size.x, textureID.back().size.y, 1.0f));	//スプライトサイズを設定
+
+	//自動で最後にロードしてテクスチャを描画するように設定
+	glActiveTexture(textureID.back().ID);
+	selectID++;
+
+}
+
+//描画するテクスチャ番号を指定
+void Sprite_2D::setDrawTextureID(unsigned char id)
+{
+	assert(id > textureID.size());
+
+	glActiveTexture(textureID.at(id).ID);
+}
+
+//移動
+void Sprite_2D::setPosition(const glm::vec2 p)
+{
+	setTranslate(glm::vec3(p.x + (textureID.at(selectID).size.x / 2.0f),p.y + (textureID.at(selectID).size.y / 2.0f),0.0f));
+}
+
+//回転
+void Sprite_2D::setRotation(const float a)
+{
+	setRotate(a);
+}
+
+//スケール
+void Sprite_2D::setScaling(const glm::vec2 s)
+{
+	setScaling(glm::vec3(s.x,s.y,0.0f));
+}
+
+
+
+// ###################### 毎フレーム ###################### 
 
 //更新
 void Sprite_2D::Update()
@@ -94,7 +169,8 @@ void Sprite_2D::Update()
 void Sprite_2D::Draw(glm::mat4 projection)
 {	
 	glBindVertexArray(vao);
-	glBindTexture(GL_TEXTURE_2D, texID);
+	glBindTexture(GL_TEXTURE_2D, textureID.at(selectID).ID);
+	
 
 	setUniformMatrix4fv("uTranslate", translate);
 	setUniformMatrix4fv("uRotate", rotate);

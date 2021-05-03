@@ -169,6 +169,7 @@
     <ClCompile Include="Sprite_2D.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform_2D.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -178,6 +179,7 @@
     <ClInclude Include="Sprite_2D.hpp" />
     <ClInclude Include="DrawTest.hpp" />
     <ClInclude Include="Shader.hpp" />
+    <ClInclude Include="Texture.hpp" />
     <ClInclude Include="Transform_2D.hpp" />
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
