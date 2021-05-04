@@ -16,7 +16,9 @@ Sprite_2D::Sprite_2D(const char* vert,const char* frag) : Transform_2D(),Shader(
 {
 	//シェーダー読み込み
 	LoadShader(vert, frag);	
-	selectID = -1;
+	textureNumber = 0;
+	textureID = std::vector<TextureData>();
+	textureUnitCount = 0;
 
 	//頂点情報
 	Vertex rectangleVertex[6] =
@@ -65,7 +67,7 @@ Sprite_2D::Sprite_2D(const char* vert,const char* frag) : Transform_2D(),Shader(
 void Sprite_2D::setTexture(TextureData tex)
 {
 	
-	textureID.push_back(tex);
+	textureID.push_back(tex);	//テクスチャーIDに追加
 
 	
 	glGenTextures(1, &textureID.back().ID);	//テクスチャIDの生成
@@ -84,30 +86,33 @@ void Sprite_2D::setTexture(TextureData tex)
 
 	setSizeScale(glm::vec3(textureID.back().size.x, textureID.back().size.y, 1.0f));	//スプライトサイズを設定
 
-	//自動で最後にロードしてテクスチャを描画するように設定
-	//glActiveTexture(textureID.back().ID);
-	selectID++;
 
+	textureID.back().textureNumber = GL_TEXTURE0 + textureUnitCount;
+	assert(textureID.size() < GL_TEXTURE31);
+
+	textureUnitCount++;	//テクスチャーユニットカウントに加算
 }
-
-// ###################### メンバ関数 ###################### 
 
 //描画するテクスチャ番号を指定
 void Sprite_2D::setDrawTextureID(unsigned char id)
 {
 	assert(id < textureID.size());
-	selectID = id;
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, textureID.at(id).ID);
+	glActiveTexture(textureID.at(id).textureNumber);
+	textureNumber = textureID.at(id).textureNumber;
 }
 
 //描画
-void Sprite_2D::DrawGraph(glm::vec2 pos,glm::mat4 projection)
+void Sprite_2D::DrawGraph(glm::vec2 pos,glm::mat4 projection,unsigned char texNum)
 {	
+
+
+	setDrawTextureID((unsigned char)texNum);	//テクチャーユニットを設定
 	glBindVertexArray(vao);
-	glBindTexture(GL_TEXTURE_2D, textureID.at(selectID).ID);
+	glBindTexture(GL_TEXTURE_2D, textureID.at(texNum).ID);
 	
-	setTranslate(glm::vec3(pos.x + (textureID.at(selectID).size.x / 2.0f), pos.y + (textureID.at(selectID).size.y / 2.0f), 0.0f));	//平行移動
+
+
+	setTranslate(glm::vec3(pos.x + (textureID.at(texNum).size.x / 2.0f), pos.y + (textureID.at(texNum).size.y / 2.0f), 0.0f));	//平行移動
 
 	//uniform
 	setUniformMatrix4fv("uTranslate", translate);
@@ -123,14 +128,14 @@ void Sprite_2D::DrawGraph(glm::vec2 pos,glm::mat4 projection)
 }
 
 //回転描画
-void Sprite_2D::DrawRotateGraph(glm::vec2 pos, float angle, glm::mat4 projection)
+void Sprite_2D::DrawRotateGraph(glm::vec2 pos, float angle, glm::mat4 projection,unsigned char texNum)
 {
 
 	glBindVertexArray(vao);
-	glBindTexture(GL_TEXTURE_2D, textureID.at(selectID).ID);
+	glBindTexture(GL_TEXTURE_2D, textureID.at(texNum).ID);
 
 	setRotate(angle);	//回転
-	setTranslate(glm::vec3(pos.x + (textureID.at(selectID).size.x / 2.0f), pos.y + (textureID.at(selectID).size.y / 2.0f), 0.0f));	//平行移動
+	setTranslate(glm::vec3(pos.x + (textureID.at(texNum).size.x / 2.0f), pos.y + (textureID.at(texNum).size.y / 2.0f), 0.0f));	//平行移動
 
 	//uniform
 	setUniformMatrix4fv("uTranslate", translate);
@@ -146,14 +151,14 @@ void Sprite_2D::DrawRotateGraph(glm::vec2 pos, float angle, glm::mat4 projection
 }
 
 //スケール描画
-void Sprite_2D::DrawExtendGraph(glm::vec2 pos, glm::vec2 s, glm::mat4 projection)
+void Sprite_2D::DrawExtendGraph(glm::vec2 pos, glm::vec2 s, glm::mat4 projection,unsigned char texNum)
 {
 
 	glBindVertexArray(vao);
-	glBindTexture(GL_TEXTURE_2D, textureID.at(selectID).ID);
+	glBindTexture(GL_TEXTURE_2D, textureID.at(texNum).ID);
 
 	setScale(s);	//スケール
-	setTranslate(glm::vec3(pos.x + (textureID.at(selectID).size.x / 2.0f), pos.y + (textureID.at(selectID).size.y / 2.0f), 0.0f));	//平行移動
+	setTranslate(glm::vec3(pos.x + (textureID.at(texNum).size.x / 2.0f), pos.y + (textureID.at(texNum).size.y / 2.0f), 0.0f));	//平行移動
 
 	//Uniform
 	setUniformMatrix4fv("uTranslate", translate);
@@ -173,6 +178,14 @@ void Sprite_2D::DrawExtendGraph(glm::vec2 pos, glm::vec2 s, glm::mat4 projection
 //デストラクタ
 Sprite_2D::~Sprite_2D()
 {
+	//テクスチャーIDを開放
+	for (int i = 0; i < textureID.size(); i++)
+	{
+		glDeleteTextures(1,&textureID.at(i).ID);
+		delete[] textureID.at(i).fileData;
+		textureID.at(i).fileData = NULL;
+	}
+
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
 }

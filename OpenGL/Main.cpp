@@ -41,7 +41,6 @@ int main()
 	Sprite_2D sprite("Shader/BasicTexture_2D.vert","Shader/BasicTexture_2D.frag");	//表示オブジェクト
 	sprite.setTexture(LoadTexture("texture_1.png"));
 	sprite.setTexture(LoadTexture("texture_2.png"));
-	//sprite.Load("Shader/BasicMono_2D.vert", "Shader/BasicMono_2D.frag");
 	
 
 	
@@ -113,17 +112,16 @@ int main()
 	
 
 		sprite.setEnable();
-		sprite.setDrawTextureID(1);
-
+		
 		
 
 		
 
 		//sprite.setUniform4f("uFragment", glm::vec4(0.0, 0.0, 1.0, 1.0));
 
-		sprite.DrawGraph(pos,camera->getProjection_2D());
-		sprite.DrawRotateGraph(pos, angle, camera->getProjection_2D());
-		sprite.DrawExtendGraph(pos,scale,camera->getProjection_2D());
+		//sprite.DrawGraph(pos,camera->getProjection_2D(),1);
+		//sprite.DrawRotateGraph(pos, angle, camera->getProjection_2D(),1);
+		sprite.DrawExtendGraph(pos,scale,camera->getProjection_2D(),0);
 	
 
 

@@ -11,6 +11,7 @@ typedef struct
 	unsigned char *fileData;
 	int channel;
 	GLuint ID;
+	GLuint textureNumber;
 }TextureData;
 
 TextureData LoadTexture(const char* fileName);	//テクスチャーロード
