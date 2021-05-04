@@ -10,7 +10,7 @@
 
 #include "Shader.hpp"
 
-
+//"Shader/BasicTexture_2D.vert", "Shader/BasicTexture_2D.frag"
 //コンストラクタ
 Sprite_2D::Sprite_2D(const char* vert,const char* frag) : Transform_2D(),Shader()
 {

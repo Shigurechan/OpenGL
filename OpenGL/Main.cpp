@@ -38,7 +38,7 @@ int main()
 
 
 
-	Sprite_2D sprite("Shader/BasicTexture_2D.vert","Shader/BasicTexture_2D.frag");	//表示オブジェクト
+	Sprite_2D sprite;	//表示オブジェクト
 	sprite.setTexture(LoadTexture("texture_1.png"));
 	sprite.setTexture(LoadTexture("texture_2.png"));
 	
