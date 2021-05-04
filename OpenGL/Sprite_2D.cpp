@@ -97,9 +97,8 @@ void Sprite_2D::setDrawTextureID(unsigned char id)
 {
 	assert(id < textureID.size());
 	selectID = id;
-	glActiveTexture(textureID.at(id).ID);
+	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, textureID.at(id).ID);
-
 }
 
 //•`‰æ
