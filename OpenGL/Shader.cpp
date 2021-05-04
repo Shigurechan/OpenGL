@@ -26,11 +26,10 @@ void Shader::LoadShader(const char* vert, const char* frag)
 	if (program == 0)
 	{
 		std::cerr << "シェーダープログラム作成エラー" << std::endl;
+		assert(program);
 		exit(1);
 	}
 }
-
-
 
 //シェーダーをロード
 GLuint Shader::loadProgram(const char* vert, const char* frag)
@@ -100,7 +99,6 @@ GLboolean Shader::CompileInfoLog(GLuint shader,const char* str)
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE)
 	{
-		std::cerr << "コンパイルエラー" << std::endl;
 		std::cerr << str << std::endl;
 	}
 	
@@ -135,6 +133,8 @@ GLuint Shader::CreateProgram(const char* vsrc, const char* fsrc)
 		glShaderSource(vobj, 1, &vsrc, NULL);
 		glCompileShader(vobj);
 
+
+		//std::cerr << "頂点シェーダー　コンパイルエラー" << std::endl << std::endl;
 		CompileInfoLog(vobj, vsrc);
 
 		glAttachShader(program, vobj);
@@ -151,6 +151,7 @@ GLuint Shader::CreateProgram(const char* vsrc, const char* fsrc)
 		glShaderSource(fobj, 1, &fsrc, NULL);
 		glCompileShader(fobj);
 
+		//std::cerr << "フラグメントシェーダー　コンパイルエラー" << std::endl << std::endl;
 		CompileInfoLog(fobj, fsrc);
 
 		glAttachShader(program, fobj);
@@ -188,9 +189,6 @@ GLboolean Shader::ProgramInfoLog(GLuint program)
 		return true;
 	}
 }
-
-
-
 
 //locationを取得
 GLint Shader::getAttribLocation(const char* str)
@@ -247,13 +245,13 @@ void Shader::setDisable()
 
 }
 
-
-//　######################################################### Uniform 設定
-
+// ###################### Uniform 設定 ######################
+  
 //vec1
 void Shader::setUniform1f(const char* name, const float vec)
 {
 	const GLuint object = glGetUniformLocation(program, name);
+	if (object == -1) { assert(0); }	//エラー処理
 	glUniform1f(object,vec);
 }
 
@@ -261,6 +259,7 @@ void Shader::setUniform1f(const char* name, const float vec)
 void Shader::setUniform2f(const char* name, const glm::vec2 vec)
 {
 	const GLuint object = glGetUniformLocation(program, name);
+	if (object == -1) { assert(0); }	//エラー処理
 	glUniform2f(object,vec.x,vec.y);
 }
 
@@ -268,6 +267,7 @@ void Shader::setUniform2f(const char* name, const glm::vec2 vec)
 void Shader::setUniform3f(const char* name, const glm::vec3 vec)
 {
 	const GLuint object = glGetUniformLocation(program, name);
+	if (object == -1) { assert(0); }	//エラー処理
 	glUniform3f(object,vec.x, vec.y,vec.z);
 }
 
@@ -275,6 +275,7 @@ void Shader::setUniform3f(const char* name, const glm::vec3 vec)
 void Shader::setUniform4f(const char* name, const glm::vec4 vec)
 {	
 	const GLuint object = glGetUniformLocation(program,name);
+	if (object == -1) { assert(0); }	//エラー処理
 	glUniform4f(object, vec.x, vec.y, vec.z, vec.w);	
 }
 
@@ -283,6 +284,7 @@ void Shader::setUniform4f(const char* name, const glm::vec4 vec)
 void Shader::setUniformMatrix2fv(const char* name, const glm::mat2 m)
 {
 	const GLuint object = glGetUniformLocation(program, name);
+	if (object == -1) { assert(0); }	//エラー処理
 	glUniformMatrix2fv(object,1,false,glm::value_ptr(m));
 }
 
@@ -290,6 +292,7 @@ void Shader::setUniformMatrix2fv(const char* name, const glm::mat2 m)
 void Shader::setUniformMatrix3fv(const char* name, const glm::mat3 m)
 {
 	const GLuint object = glGetUniformLocation(program, name);
+	if (object == -1) { assert(0); }	//エラー処理
 	glUniformMatrix3fv(object, 1, false, glm::value_ptr(m));
 }
 
@@ -297,6 +300,7 @@ void Shader::setUniformMatrix3fv(const char* name, const glm::mat3 m)
 void Shader::setUniformMatrix4fv(const char* name, const glm::mat4 m)
 {
 	const GLuint object = glGetUniformLocation(program, name);
+	if (object == -1) { assert(0); }	//エラー処理
 	glUniformMatrix4fv(object, 1, false, glm::value_ptr(m));
 
 }

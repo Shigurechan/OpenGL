@@ -14,28 +14,22 @@ class Window;
 # トランスフォームクラス: Actorクラスを継承
 
 説明
-	全ての描画物はこれを継承する
+	全ての2D描画物はこれを継承する
 ###########################################################################*/
 
-class Transform_2D : public Actor
+class Transform_2D
 {
 public:
 
-	Transform_2D(std::shared_ptr<Window> w);	//コンストラクタ
-	~Transform_2D();							//デストラクタ
+	Transform_2D();		//コンストラクタ
+	~Transform_2D();	//デストラクタ
 
 
 
 	// ###################### Transform_2D　設定 ###################### 
-	void setScale(glm::vec3 s);				//スケール
+	void setScale(glm::vec2 s);				//スケール
 	void setRotate(float a);				//回転
 	void setTranslate(glm::vec3 t);			//平行移動
-
-	// ###################### Transform_2D　取得 ###################### 
-	glm::vec3 getScale();		//スケール
-	float getRotateAngle();		//回転量
-	glm::vec3 getTranslate();	//平行移動
-
 
 protected:
 
@@ -48,12 +42,7 @@ protected:
 	
 
 private:
-	//パラメータ
-	glm::vec3 vecScale;		//拡大縮小
-	glm::vec3 vecSize;		//画像サイズ
-	float angle;			//回転
-	glm::vec3 vecTranslate;	//平行移動
-
+	glm::vec2 size;
 
 };
 

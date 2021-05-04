@@ -31,7 +31,6 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
-	glClearColor(0.0, 0.0, 1.0, 1.0);	//背景色
 // #############################################################################
 
 
@@ -39,35 +38,65 @@ int main()
 
 
 
-	Sprite_2D sprite(window,"Shader/BasicTexture_2D.vert","Shader/BasicTexture_2D.frag");	//表示オブジェクト
-	sprite.setTexture(LoadTexture("texture.png"));
+	Sprite_2D sprite("Shader/BasicTexture_2D.vert","Shader/BasicTexture_2D.frag");	//表示オブジェクト
+	sprite.setTexture(LoadTexture("texture_1.png"));
+	sprite.setTexture(LoadTexture("texture_2.png"));
 	//sprite.Load("Shader/BasicMono_2D.vert", "Shader/BasicMono_2D.frag");
 	
 
 	
-	glm::vec2 pos = glm::vec2(0,0);
+	glm::vec2 pos = glm::vec2(0, 0);
+	glm::vec2 scale = glm::vec2(0,0);
+	float angle = 0.0f;
 
 	while (*window)
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//カラーバッファをクリア
+		glClearColor(0.0, 0.0, 1.0, 1.0);					//カラーバッファのクリア色を設定
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//カラーバッファ指定色でクリア
 		
 
 
 		if (window->getKeyInput(GLFW_KEY_D) > 0)
 		{
-			pos.x += 100;
+			pos.x += 10;
 		}else if (window->getKeyInput(GLFW_KEY_A) > 0)
 		{
-			pos.x += -100;
+			pos.x += -10;
 
 		}else if (window->getKeyInput(GLFW_KEY_W) > 0)
 		{
-			pos.y += -100;
+			pos.y += -10;
 
 		}
 		else if (window->getKeyInput(GLFW_KEY_S) > 0)
 		{
-			pos.y += 100;
+			pos.y += 10;
+
+		}else if (window->getKeyInput(GLFW_KEY_Q) > 0)
+		{
+			angle += 10;
+		}
+		else if (window->getKeyInput(GLFW_KEY_E) > 0)
+		{
+			angle += -10;
+
+		}
+		else if (window->getKeyInput(GLFW_KEY_Z) > 0)
+		{
+			scale.x += 10;
+		}
+		else if (window->getKeyInput(GLFW_KEY_X) > 0)
+		{
+			scale.x += -10;
+
+		}
+		else if (window->getKeyInput(GLFW_KEY_C) > 0)
+		{
+			scale.y += 10;
+		}
+		else if (window->getKeyInput(GLFW_KEY_V) > 0)
+		{
+			scale.y += -10;
 
 		}
 
@@ -76,18 +105,25 @@ int main()
 
 
 
-		sprite.setPosition(pos);
+
+
+
+
+
+	
 
 		sprite.setEnable();
-
+		sprite.setDrawTextureID(1);
 
 		
 
-		sprite.Update();
+		
 
-		sprite.setUniform4f("uFragment", glm::vec4(0.0, 0.0, 1.0, 1.0));
+		//sprite.setUniform4f("uFragment", glm::vec4(0.0, 0.0, 1.0, 1.0));
 
-		sprite.Draw(camera->getProjection_2D());
+		sprite.DrawGraph(pos,camera->getProjection_2D());
+		sprite.DrawRotateGraph(pos, angle, camera->getProjection_2D());
+		sprite.DrawExtendGraph(pos,scale,camera->getProjection_2D());
 	
 
 
