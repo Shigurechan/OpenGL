@@ -9,11 +9,16 @@
 
 
 #include "Shader.hpp"
+#include "Window.hpp"
+
 
 //"Shader/BasicTexture_2D.vert", "Shader/BasicTexture_2D.frag"
 //コンストラクタ
-Sprite_2D::Sprite_2D(const char* vert,const char* frag) : Transform_2D(),Shader()
+Sprite_2D::Sprite_2D(std::shared_ptr<Window> w,const char* vert,const char* frag) : Transform_2D(),Shader()
 {
+	windowContext = w;
+
+
 	//シェーダー読み込み
 	LoadShader(vert, frag);	
 	textureNumber = 0;
@@ -88,7 +93,7 @@ void Sprite_2D::setTexture(TextureData tex)
 
 
 	textureID.back().textureNumber = GL_TEXTURE0 + textureUnitCount;
-	assert(textureID.size() < GL_TEXTURE31);
+	assert(textureID.back().textureNumber < GL_TEXTURE31);
 
 	textureUnitCount++;	//テクスチャーユニットカウントに加算
 }
@@ -102,7 +107,7 @@ void Sprite_2D::setDrawTextureID(unsigned char id)
 }
 
 //描画
-void Sprite_2D::DrawGraph(glm::vec2 pos,glm::mat4 projection,unsigned char texNum)
+void Sprite_2D::DrawGraph(glm::vec2 pos,unsigned char texNum)
 {	
 
 
@@ -118,7 +123,7 @@ void Sprite_2D::DrawGraph(glm::vec2 pos,glm::mat4 projection,unsigned char texNu
 	setUniformMatrix4fv("uTranslate", translate);
 	setUniformMatrix4fv("uRotate", rotate);
 	setUniformMatrix4fv("uScale", scale);
-	setUniformMatrix4fv("uViewProjection",projection);
+	setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, windowContext->getSize().y, 0.0f, -1.0f, 1.0f));
 	
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -128,7 +133,7 @@ void Sprite_2D::DrawGraph(glm::vec2 pos,glm::mat4 projection,unsigned char texNu
 }
 
 //回転描画
-void Sprite_2D::DrawRotateGraph(glm::vec2 pos, float angle, glm::mat4 projection,unsigned char texNum)
+void Sprite_2D::DrawRotateGraph(glm::vec2 pos, float angle,unsigned char texNum)
 {
 
 	glBindVertexArray(vao);
@@ -141,7 +146,7 @@ void Sprite_2D::DrawRotateGraph(glm::vec2 pos, float angle, glm::mat4 projection
 	setUniformMatrix4fv("uTranslate", translate);
 	setUniformMatrix4fv("uRotate", rotate);
 	setUniformMatrix4fv("uScale", scale);
-	setUniformMatrix4fv("uViewProjection", projection);
+	setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, windowContext->getSize().y, 0.0f, -1.0f, 1.0f));
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -151,7 +156,7 @@ void Sprite_2D::DrawRotateGraph(glm::vec2 pos, float angle, glm::mat4 projection
 }
 
 //スケール描画
-void Sprite_2D::DrawExtendGraph(glm::vec2 pos, glm::vec2 s, glm::mat4 projection,unsigned char texNum)
+void Sprite_2D::DrawExtendGraph(glm::vec2 pos, glm::vec2 s,unsigned char texNum)
 {
 
 	glBindVertexArray(vao);
@@ -164,7 +169,7 @@ void Sprite_2D::DrawExtendGraph(glm::vec2 pos, glm::vec2 s, glm::mat4 projection
 	setUniformMatrix4fv("uTranslate", translate);
 	setUniformMatrix4fv("uRotate", rotate);
 	setUniformMatrix4fv("uScale", scale);
-	setUniformMatrix4fv("uViewProjection", projection);
+	setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, windowContext->getSize().y, 0.0f, -1.0f, 1.0f));
 
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);

@@ -22,9 +22,7 @@ int main()
 
 	atexit(glfwTerminate);	//プログラム終了時の処理を登録
 	std::shared_ptr<Window> window = std::make_shared<Window>();			//コンテキストを作成
-	std::shared_ptr<Camera> camera = std::make_shared<Camera>(window);			//カメラを作成
-
-
+	
 	//OpenGL Verison 3.2 Core Profile　を選択する
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,5);
@@ -38,7 +36,8 @@ int main()
 
 
 
-	Sprite_2D sprite;	//表示オブジェクト
+	Sprite_2D sprite(window);	//表示オブジェクト
+
 	sprite.setTexture(LoadTexture("texture_1.png"));
 	sprite.setTexture(LoadTexture("texture_2.png"));
 	
@@ -97,31 +96,16 @@ int main()
 		{
 			scale.y += -10;
 
-		}
-
-
-
-
-
-
-
-
-
-
-
-	
+		}	
 
 		sprite.setEnable();
 		
-		
-
-		
-
+	
 		//sprite.setUniform4f("uFragment", glm::vec4(0.0, 0.0, 1.0, 1.0));
 
-		//sprite.DrawGraph(pos,camera->getProjection_2D(),1);
-		//sprite.DrawRotateGraph(pos, angle, camera->getProjection_2D(),1);
-		sprite.DrawExtendGraph(pos,scale,camera->getProjection_2D(),0);
+		sprite.DrawGraph(pos,0);
+		//sprite.DrawRotateGraph(pos, angle,1);
+		//sprite.DrawExtendGraph(pos,scale,0);
 	
 
 
