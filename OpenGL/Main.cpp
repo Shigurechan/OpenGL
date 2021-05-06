@@ -12,6 +12,9 @@
 
 #include "Camera.hpp"
 #include "Texture.hpp"
+#include "Line.hpp"
+#include "Circle.hpp"
+
 
 
 int main()
@@ -36,15 +39,9 @@ int main()
 
 
 
-
-
-	Sprite sprite(window);	//表示オブジェクト
-	sprite.setTexture(LoadTexture("texture_1.png"));
-	Rectangle rect(window);
-
-
 	
-	glm::vec2 pos = glm::vec2(0, 0);
+	
+	glm::vec2 pos = glm::vec2(540,0);
 	glm::vec2 scale = glm::vec2(0,0);
 	float angle = 0.0f;
 
@@ -54,20 +51,12 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//カラーバッファ指定色でクリア
 
 
-
 		
-		rect.DrawRotate(pos, pos + glm::vec2(100, 100),angle ,glm::vec4(0, 255, 0, 255));
 		
 
 
 
-
-
-
-
-
-
-
+		
 
 		if (window->getKeyInput(GLFW_KEY_D) > 0)
 		{

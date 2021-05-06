@@ -10,19 +10,18 @@ Rectangle::Rectangle(std::shared_ptr<Window> w, const char* vert, const char* fr
 	windowContext = w;	//ウインドウコンテキスト
 
 
-	//シェーダー読み込み
 	if (vert == NULL && frag == NULL)
 	{
 		vert = "Shader/2D/BasicMono_VertColor_2D.vert";
 		frag = "Shader/2D/BasicMono_VertColor_2D.frag";
+		LoadShader(vert,frag);
 		isDefaultShader = true;
 	}
-	else {
+	else
+	{
+		LoadShader(vert, frag);
 		isDefaultShader = false;
-
 	}
-
-	LoadShader(vert,frag);	//シェーダーファイルを読み込み
 
 	//頂点情報
 	
@@ -40,13 +39,14 @@ Rectangle::Rectangle(std::shared_ptr<Window> w, const char* vert, const char* fr
 	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(VertexColor), rectangleVertex, GL_STATIC_DRAW);
 	glVertexAttribPointer(attrib, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
 	setBindAttribVertex("vertexPosition");
-
+	
 	//頂点カラー
 	attrib = getAttribLocation("vertexColor");
 	glEnableVertexAttribArray(attrib);
 	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(VertexColor), rectangleVertex, GL_STATIC_DRAW);
 	glVertexAttribPointer(attrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(sizeof(GLfloat) * 2));
 	setBindAttribFragment("vertexColor");
+
 
 
 	//アルファブレンド有効
@@ -117,27 +117,33 @@ void Rectangle::setVertexColor(int vertNum,glm::vec4 color)
 //描画
 void Rectangle::Draw(glm::vec2 start,glm::vec2 end,glm::vec4 color)
 {
-	if (isDefaultShader == true) {
+	if (isDefaultShader == true) 
+	{
 		setEnable();
 	}
 
-	setVertexALLColor(color);	//頂点カラーを再設定
-
 	glBindVertexArray(vao);
 
-	//頂点カラー
-	GLint attrib = getAttribLocation("vertexColor");
-	glEnableVertexAttribArray(attrib);
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(VertexColor), rectangleVertex, GL_STATIC_DRAW);
-	glVertexAttribPointer(attrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(sizeof(GLfloat) * 2));
-	setBindAttribFragment("vertexColor");
+	
+	if (isDefaultShader == true)
+	{
+		setVertexALLColor(color);	//頂点色を設定
 
+		//頂点カラー
+		GLint attrib = getAttribLocation("vertexColor");
+		glEnableVertexAttribArray(attrib);
+		glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(VertexColor), rectangleVertex, GL_STATIC_DRAW);
+		glVertexAttribPointer(attrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(sizeof(GLfloat) * 2));
+		setBindAttribFragment("vertexColor");
+	}
+
+	
 	//Transform
-	setSizeScale(glm::vec2((end.x - start.x) / 2.0f, (end.x - start.x) / 2.0f));			//サイズ	
-	setScale(glm::vec2(getSizeScale().x, getSizeScale().y));								//スケール
-	setTranslate(glm::vec3(start.x + getSizeScale().x, start.y + getSizeScale().y, 0.0f));	//平行移動
+	setSizeScale(glm::vec2((end.x - start.x), (end.y - start.y)));			//サイズ	
+	setScale(glm::vec2(0,0));																//スケール
+	setTranslate(glm::vec3(start.x + (getSizeScale().x / 2.0f), start.y + (getSizeScale().y / 2.0f)  , 0.0f));	//平行移動
 
-	//Uniform
+	//Uniform		
 	setUniformMatrix4fv("uTranslate", translate);
 	setUniformMatrix4fv("uRotate", rotate);
 	setUniformMatrix4fv("uScale", scale);
@@ -147,37 +153,42 @@ void Rectangle::Draw(glm::vec2 start,glm::vec2 end,glm::vec4 color)
 	glBindVertexArray(0);	
 
 
-	if (isDefaultShader == true) {
+	if (isDefaultShader == true) 
+	{
 		setDisable();
 	}
+
 }
-
-
 
 //回転描画
 void Rectangle::DrawRotate(glm::vec2 start, glm::vec2 end,float angle, glm::vec4 color)
 {
-	if (isDefaultShader == true) {
+	if (isDefaultShader == true) 
+	{
 		setEnable();
 	}
 
-	setVertexALLColor(color);	//頂点カラーを再設定
-
 	glBindVertexArray(vao);
 
-	//頂点カラー
-	GLint attrib = getAttribLocation("vertexColor");
-	glEnableVertexAttribArray(attrib);
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(VertexColor), rectangleVertex, GL_STATIC_DRAW);
-	glVertexAttribPointer(attrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(sizeof(GLfloat) * 2));
-	setBindAttribFragment("vertexColor");
+
+	
+	if (isDefaultShader == true)
+	{
+		setVertexALLColor(color);	//頂点色を設定
+
+		//頂点カラー
+		GLint attrib = getAttribLocation("vertexColor");
+		glEnableVertexAttribArray(attrib);
+		glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(VertexColor), rectangleVertex, GL_STATIC_DRAW);
+		glVertexAttribPointer(attrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(sizeof(GLfloat) * 2));
+		setBindAttribFragment("vertexColor");
+	}
 
 	//Transform
-	setSizeScale(glm::vec2((end.x - start.x), (end.y - start.y)));							//サイズ	
-	setRotate(angle);																		//回転
-	setScale(glm::vec2(getSizeScale().x, getSizeScale().y));								//スケール
+	setSizeScale(glm::vec2((end.x - start.x), (end.y - start.y)));												//サイズ	
+	setScale(glm::vec2(0,0));																					//スケール
+	setRotate(angle);																							//回転
 	setTranslate(glm::vec3((start.x + getSizeScale().x) / 2.0f, (start.y + getSizeScale().y) / 2.0f, 0.0f));	//平行移動
-
 
 	//Uniform
 	setUniformMatrix4fv("uTranslate", translate);
@@ -186,10 +197,13 @@ void Rectangle::DrawRotate(glm::vec2 start, glm::vec2 end,float angle, glm::vec4
 	setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, windowContext->getSize().y, 0.0f, -1.0f, 1.0f));
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+
+
+
 	glBindVertexArray(0);
-
-
-	if (isDefaultShader == true) {
+	if (isDefaultShader == true) 
+	{
 		setDisable();
 	}
 }
@@ -200,27 +214,34 @@ void Rectangle::DrawRotate(glm::vec2 start, glm::vec2 end,float angle, glm::vec4
 //描画
 void Rectangle::DrawColor(glm::vec2 start, glm::vec2 end, glm::vec4 lu, glm::vec4 ru, glm::vec4 rd, glm::vec4 ld)
 {
-	if (isDefaultShader == true) {
+	if (isDefaultShader == true) 
+	{
 		setEnable();
 	}
 
-	//頂点カラーを設定
-	setVertexColor(0, ld);
-	setVertexColor(1, lu);
-	setVertexColor(2, rd);
-	setVertexColor(3, rd);
-	setVertexColor(4, lu);
-	setVertexColor(5, ru);
 	
 
 	glBindVertexArray(vao);
 
-	//頂点カラー
-	GLint attrib = getAttribLocation("vertexColor");
-	glEnableVertexAttribArray(attrib);
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(VertexColor), rectangleVertex, GL_STATIC_DRAW);
-	glVertexAttribPointer(attrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(sizeof(GLfloat) * 2));
-	setBindAttribFragment("vertexColor");
+	if (isDefaultShader == true)
+	{
+
+		//頂点カラーを設定
+		setVertexColor(0, ld);
+		setVertexColor(1, lu);
+		setVertexColor(2, rd);
+		setVertexColor(3, rd);
+		setVertexColor(4, lu);
+		setVertexColor(5, ru);
+
+
+		//頂点カラー
+		GLint attrib = getAttribLocation("vertexColor");
+		glEnableVertexAttribArray(attrib);
+		glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(VertexColor), rectangleVertex, GL_STATIC_DRAW);
+		glVertexAttribPointer(attrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(sizeof(GLfloat) * 2));
+		setBindAttribFragment("vertexColor");
+	}
 
 	//Transform
 	setSizeScale(glm::vec2((end.x - start.x) / 2.0f, (end.x - start.x) / 2.0f));			//サイズ	
@@ -241,7 +262,64 @@ void Rectangle::DrawColor(glm::vec2 start, glm::vec2 end, glm::vec4 lu, glm::vec
 	glBindVertexArray(0);
 
 
-	if (isDefaultShader == true) {
+	if (isDefaultShader == true) 
+	{
+		setDisable();
+	}
+}
+
+//描画
+void Rectangle::DrawRotateColor(glm::vec2 start, glm::vec2 end,float angle ,glm::vec4 lu, glm::vec4 ru, glm::vec4 rd, glm::vec4 ld)
+{
+	if (isDefaultShader == true) 
+	{
+		setEnable();
+	}
+
+	glBindVertexArray(vao);
+
+	if (isDefaultShader == true)
+	{
+		//頂点カラーを設定
+		setVertexColor(0, ld);
+		setVertexColor(1, lu);
+		setVertexColor(2, rd);
+		setVertexColor(3, rd);
+		setVertexColor(4, lu);
+		setVertexColor(5, ru);
+
+
+		//頂点カラー
+		GLint attrib = getAttribLocation("vertexColor");
+		glEnableVertexAttribArray(attrib);
+		glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(VertexColor), rectangleVertex, GL_STATIC_DRAW);
+		glVertexAttribPointer(attrib, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(sizeof(GLfloat) * 2));
+		setBindAttribFragment("vertexColor");
+	}
+
+
+	//Transform
+	setSizeScale(glm::vec2((end.x - start.x), (end.y - start.y)));												//サイズ	
+	setScale(glm::vec2(0, 0));																					//スケール
+	setRotate(angle);																							//回転
+	setTranslate(glm::vec3((start.x + getSizeScale().x) / 2.0f, (start.y + getSizeScale().y) / 2.0f, 0.0f));	//平行移動
+
+	//Uniform
+	setUniformMatrix4fv("uTranslate", translate);
+	setUniformMatrix4fv("uRotate", rotate);
+	setUniformMatrix4fv("uScale", scale);
+	setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, windowContext->getSize().y, 0.0f, -1.0f, 1.0f));
+
+
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+
+	glBindVertexArray(0);
+
+
+	if (isDefaultShader == true) 
+	{
 		setDisable();
 	}
 }

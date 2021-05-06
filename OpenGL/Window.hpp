@@ -6,6 +6,7 @@
 #include <glfw/include/GLFW/glfw3.h>
 #include "glm/glm.hpp"
 
+#define PI ((float)3.14159265359f) //PI
 
 class Window
 {

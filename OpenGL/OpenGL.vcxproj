@@ -165,6 +165,8 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -176,6 +178,8 @@
   <ItemGroup>
     <ClInclude Include="Actor.hpp" />
     <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="Circle.hpp" />
+    <ClInclude Include="Line.hpp" />
     <ClInclude Include="Rectangle.hpp" />
     <ClInclude Include="Sprite.hpp" />
     <ClInclude Include="Shader.hpp" />

@@ -5,9 +5,12 @@
 Transform_2D::Transform_2D()
 {
 	size = glm::vec2(0,0);
+	vao = 0;
+	vbo = 0;
+	isDefaultShader = false;
 
 	//s—ñ‚ğ‰Šú‰»
-	scale = glm::scale(glm::mat4(1), glm::vec3(0.0f,0.0f,0.0f));
+	scale = glm::scale(glm::mat4(1), glm::vec3(1.0f,1.0f,1.0f));
 	rotate = glm::rotate(0.0f,glm::vec3(0.0, 0.0, 1.0));
 	translate = glm::translate(glm::mat4(1), glm::vec3(0.0f,0.0f,0.0f));
 }

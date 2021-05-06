@@ -29,6 +29,8 @@ Sprite::Sprite(std::shared_ptr<Window> w,const char* vert,const char* frag) : Tr
 	}
 	else 
 	{
+		LoadShader(vert, frag);
+
 		isDefaultShader = false;
 
 	}
