@@ -7,6 +7,7 @@
 #include <glm/gtx/Transform.hpp>
 
 #include "Actor.hpp"
+#include <glew/include/GL/glew.h>
 
 
 class Window;
@@ -26,23 +27,52 @@ public:
 
 
 
+	
+protected:
+
 	// ###################### Transform_2D　設定 ###################### 
 	void setScale(glm::vec2 s);				//スケール
 	void setRotate(float a);				//回転
 	void setTranslate(glm::vec3 t);			//平行移動
+	glm::vec2 getSizeScale();				//サイズを取得
+	void setSizeScale(glm::vec2 s);			//サイズを設定
 
-protected:
+	//頂点座標とUV
+	struct VertexUV
+	{
+		GLfloat position[2];
+		GLfloat uv[2];
+	};
 
-	void setSizeScale(glm::vec2 s);	//スプライトのサイズを設定
+	//頂点座標
+	struct Vertex
+	{
+		GLfloat position[2];
+	};
+
+	//頂点座標と頂点カラー
+	struct VertexColor
+	{
+		GLfloat position[2];
+		GLfloat color[4];
+	};
+
+
+
+
+
+	GLuint vao;							//VertexArrayObject
+	GLuint vbo;							//VertexBufferObject	
+
+	bool isDefaultShader;	//既定のシェーダーファイルが選ばれたかどうか？
 
 	//描画行列
 	glm::mat4 scale;		//拡大縮小
 	glm::mat4 rotate;		//回転
 	glm::mat4 translate;	//平行移動
-	
 
 private:
-	glm::vec2 size;
+	glm::vec2 size;			//画像サイズ
 
 };
 

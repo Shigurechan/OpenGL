@@ -1,22 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ライブラリ">
-      <UniqueIdentifier>{5bcf58ae-8f3a-4452-8242-eaa2949270cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ライブラリ\ソースファイル">
-      <UniqueIdentifier>{0adc18f7-b0ac-44cb-9dc7-e747141433fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ライブラリ\ヘッダーファイル">
-      <UniqueIdentifier>{fb0116fb-9ce6-4bdd-82d3-1e043bd26cf8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ゲーム">
-      <UniqueIdentifier>{251f9400-7a26-45ab-a1eb-d3e93f3b4dc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ゲーム\ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="リソース ファイル">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -27,83 +11,91 @@
     <Filter Include="リソース ファイル\3D">
       <UniqueIdentifier>{a874f55c-32f5-46b0-b07a-2eaa6faf1436}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ゲーム\ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="ソースファイル">
+      <UniqueIdentifier>{0adc18f7-b0ac-44cb-9dc7-e747141433fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル">
+      <UniqueIdentifier>{fb0116fb-9ce6-4bdd-82d3-1e043bd26cf8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp">
-      <Filter>ライブラリ\ソースファイル</Filter>
+      <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>ライブラリ\ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawTest.cpp">
-      <Filter>ライブラリ\ソースファイル</Filter>
+      <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>ライブラリ\ソースファイル</Filter>
+      <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite_2D.cpp">
-      <Filter>ライブラリ\ソースファイル</Filter>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>ライブラリ\ソースファイル</Filter>
+      <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="Transform_2D.cpp">
-      <Filter>ライブラリ\ソースファイル</Filter>
+      <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
-      <Filter>ライブラリ\ソースファイル</Filter>
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
-      <Filter>ゲーム\ソース ファイル</Filter>
+      <Filter>ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.hpp">
-      <Filter>ライブラリ\ヘッダーファイル</Filter>
+      <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Camera.hpp">
-      <Filter>ライブラリ\ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DrawTest.hpp">
-      <Filter>ライブラリ\ヘッダーファイル</Filter>
+      <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Shader.hpp">
-      <Filter>ライブラリ\ヘッダーファイル</Filter>
+      <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite_2D.hpp">
-      <Filter>ライブラリ\ヘッダーファイル</Filter>
+    <ClInclude Include="Sprite.hpp">
+      <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Texture.hpp">
-      <Filter>ライブラリ\ヘッダーファイル</Filter>
+      <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Transform_2D.hpp">
-      <Filter>ライブラリ\ヘッダーファイル</Filter>
+      <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Window.hpp">
-      <Filter>ライブラリ\ヘッダーファイル</Filter>
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.hpp">
+      <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\BasicMono_3D.frag">
+    <None Include="Shader\2D\BasicTexture_2D.frag">
+      <Filter>リソース ファイル\2D</Filter>
+    </None>
+    <None Include="Shader\2D\BasicTexture_2D.vert">
+      <Filter>リソース ファイル\2D</Filter>
+    </None>
+    <None Include="Shader\2D\BasicMono_2D.frag">
+      <Filter>リソース ファイル\2D</Filter>
+    </None>
+    <None Include="Shader\2D\BasicMono_2D.vert">
+      <Filter>リソース ファイル\2D</Filter>
+    </None>
+    <None Include="Shader\3D\BasicMono_3D.frag">
       <Filter>リソース ファイル\3D</Filter>
     </None>
-    <None Include="Shader\BasicMono_3D.vert">
+    <None Include="Shader\3D\BasicMono_3D.vert">
       <Filter>リソース ファイル\3D</Filter>
     </None>
-    <None Include="Shader\BasicMono_2D.frag">
+    <None Include="Shader\2D\BasicMono_VertColor_2D.vert">
       <Filter>リソース ファイル\2D</Filter>
     </None>
-    <None Include="Shader\BasicMono_2D.vert">
-      <Filter>リソース ファイル\2D</Filter>
-    </None>
-    <None Include="Shader\BasicTexture_2D.frag">
-      <Filter>リソース ファイル\2D</Filter>
-    </None>
-    <None Include="Shader\BasicTexture_2D.vert">
+    <None Include="Shader\2D\BasicMono_VertColor_2D.frag">
       <Filter>リソース ファイル\2D</Filter>
     </None>
   </ItemGroup>

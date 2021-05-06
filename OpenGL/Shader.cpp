@@ -15,20 +15,25 @@ Shader::Shader()
 
 
 //シェーダーをロード
-void Shader::LoadShader(const char* vert, const char* frag)
+bool Shader::LoadShader(const char* vert, const char* frag)
 {
 	if (program != 0)
 	{
 		glDeleteShader(program);
+//		return true;
 	}
 
 	program = loadProgram(vert, frag);
+
 	if (program == 0)
 	{
 		std::cerr << "シェーダープログラム作成エラー" << std::endl;
-		assert(program);
-		exit(1);
+		//assert(program);
+		//exit(1);
+		return false;
 	}
+
+	return true;
 }
 
 //シェーダーをロード
@@ -46,6 +51,8 @@ GLuint Shader::loadProgram(const char* vert, const char* frag)
 		return CreateProgram(vsrc.data(), fsrc.data());
 	}
 	else {
+		//printf("あああ");
+		//assert(0 && "シェーダーファイル読み込みエラー");
 		return 0;
 	}
 }
@@ -57,13 +64,15 @@ bool Shader::ReadShaderSource(const char* name, std::vector<GLchar>& buffer)
 {
 	if (name == NULL)
 	{
+		//assert(0 && "シェーダーファイルが指定されていません。");
 		return false;
 	}
 	
 
 	std::ifstream file(name, std::ios::binary);
-	if (file.fail())
+	if (file.fail() == true)
 	{
+		//printf("うううう");
 		std::cerr << "ソースファイルが読み込めません: " << name << std::endl;
 		file.close();
 		return false;
@@ -77,7 +86,7 @@ bool Shader::ReadShaderSource(const char* name, std::vector<GLchar>& buffer)
 	file.read(buffer.data(), length);
 	buffer[length] = '\0';
 	
-	if (file.fail())
+	if (file.fail() == true)
 	{
 		std::cerr << "ソースファイルを読み込めません: " << name << std::endl;
 		file.close();

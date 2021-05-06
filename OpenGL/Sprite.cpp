@@ -1,4 +1,4 @@
-#include "Sprite_2D.hpp"
+#include "Sprite.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -14,30 +14,34 @@
 
 //"Shader/BasicTexture_2D.vert", "Shader/BasicTexture_2D.frag"
 //コンストラクタ
-Sprite_2D::Sprite_2D(std::shared_ptr<Window> w,const char* vert,const char* frag) : Transform_2D(),Shader()
+Sprite::Sprite(std::shared_ptr<Window> w,const char* vert,const char* frag) : Transform_2D(),Shader()
 {
-	windowContext = w;
+	windowContext = w;	//ウインドウコンテキスト
 
 
 	//シェーダー読み込み
-	LoadShader(vert, frag);	
+
+	if (vert == NULL && frag == NULL)
+	{
+		vert = "Shader/2D/BasicTexture_2D.vert";
+		frag = "Shader/2D/BasicTexture_2D.frag";
+		isDefaultShader = true;
+	}
+	else 
+	{
+		isDefaultShader = false;
+
+	}
+
+	LoadShader(vert, frag);	//シェーダーロード
+	
+
+	//テクスチャ関係
 	textureNumber = 0;
 	textureID = std::vector<TextureData>();
 	textureUnitCount = 0;
 
-	//頂点情報
-	Vertex rectangleVertex[6] =
-	{
-		//頂点、頂点色
-		{-0.5f,0.5f,     0.0f,1.0f},
-		{-0.5f,-0.5f,	0.0f,0.0f},
-		{0.5f,0.5f,		1.0f,1.0f},
-
-		{0.5f,0.5f,		1.0f,1.0f},
-		{-0.5f,-0.5f,    0.0f,0.0f},
-		{0.5f,-0.5f,     1.0f,0.0f},
-	};
-
+	
 	//vao
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -49,13 +53,13 @@ Sprite_2D::Sprite_2D(std::shared_ptr<Window> w,const char* vert,const char* frag
 	//頂点	
 	GLint attrib = getAttribLocation("vertexPosition");
 	glEnableVertexAttribArray(attrib);
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(Vertex), rectangleVertex, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(VertexUV), rectangleVertex, GL_STATIC_DRAW);
 	glVertexAttribPointer(attrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)0);
 	setBindAttribVertex("vertexPosition");
 
 	attrib = getAttribLocation("vertexUV");
 	glEnableVertexAttribArray(attrib);
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(Vertex), rectangleVertex, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(VertexUV), rectangleVertex, GL_STATIC_DRAW);
 	glVertexAttribPointer(attrib, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid*)(sizeof(GLfloat) * 2));
 	setBindAttribVertex("vertexUV");
 
@@ -69,7 +73,7 @@ Sprite_2D::Sprite_2D(std::shared_ptr<Window> w,const char* vert,const char* frag
 // ###################### メンバ関数 ###################### 
 
 //テクスチャ設定
-void Sprite_2D::setTexture(TextureData tex)
+void Sprite::setTexture(TextureData tex)
 {
 	
 	textureID.push_back(tex);	//テクスチャーIDに追加
@@ -93,13 +97,13 @@ void Sprite_2D::setTexture(TextureData tex)
 
 
 	textureID.back().textureNumber = GL_TEXTURE0 + textureUnitCount;
-	assert(textureID.back().textureNumber < GL_TEXTURE31);
+	assert(textureID.back().textureNumber < GL_TEXTURE31);//エラー表示
 
 	textureUnitCount++;	//テクスチャーユニットカウントに加算
 }
 
 //描画するテクスチャ番号を指定
-void Sprite_2D::setDrawTextureID(unsigned char id)
+void Sprite::setDrawTextureID(unsigned char id)
 {
 	assert(id < textureID.size());
 	glActiveTexture(textureID.at(id).textureNumber);
@@ -107,9 +111,12 @@ void Sprite_2D::setDrawTextureID(unsigned char id)
 }
 
 //描画
-void Sprite_2D::DrawGraph(glm::vec2 pos,unsigned char texNum)
-{	
-
+void Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum)
+{
+	if (isDefaultShader == true)
+	{
+		setEnable();
+	}
 
 	setDrawTextureID((unsigned char)texNum);	//テクチャーユニットを設定
 	glBindVertexArray(vao);
@@ -130,11 +137,21 @@ void Sprite_2D::DrawGraph(glm::vec2 pos,unsigned char texNum)
 	
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	if (isDefaultShader == true)
+	{
+		setDisable();
+	}
+
 }
 
 //回転描画
-void Sprite_2D::DrawRotateGraph(glm::vec2 pos, float angle,unsigned char texNum)
+void Sprite::DrawRotateGraph(glm::vec2 pos, float angle,unsigned char texNum)
 {
+	if (isDefaultShader == true)
+	{
+		setEnable();
+	}
 
 	glBindVertexArray(vao);
 	glBindTexture(GL_TEXTURE_2D, textureID.at(texNum).ID);
@@ -153,11 +170,21 @@ void Sprite_2D::DrawRotateGraph(glm::vec2 pos, float angle,unsigned char texNum)
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+
+	if (isDefaultShader == true)
+	{
+		setDisable();
+	}
+
 }
 
 //スケール描画
-void Sprite_2D::DrawExtendGraph(glm::vec2 pos, glm::vec2 s,unsigned char texNum)
+void Sprite::DrawExtendGraph(glm::vec2 pos, glm::vec2 s,unsigned char texNum)
 {
+	if (isDefaultShader == true)
+	{
+		setEnable();
+	}
 
 	glBindVertexArray(vao);
 	glBindTexture(GL_TEXTURE_2D, textureID.at(texNum).ID);
@@ -176,12 +203,18 @@ void Sprite_2D::DrawExtendGraph(glm::vec2 pos, glm::vec2 s,unsigned char texNum)
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	if (isDefaultShader == true)
+	{
+		setDisable();
+	}
+
 }
 
 
 
 //デストラクタ
-Sprite_2D::~Sprite_2D()
+Sprite::~Sprite()
 {
 	//テクスチャーIDを開放
 	for (int i = 0; i < textureID.size(); i++)

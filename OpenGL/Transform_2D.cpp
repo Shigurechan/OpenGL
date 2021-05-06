@@ -7,12 +7,12 @@ Transform_2D::Transform_2D()
 	size = glm::vec2(0,0);
 
 	//行列を初期化
-	scale = glm::scale(glm::mat4(1), glm::vec3(1.0f,1.0f,1.0f));
+	scale = glm::scale(glm::mat4(1), glm::vec3(0.0f,0.0f,0.0f));
 	rotate = glm::rotate(0.0f,glm::vec3(0.0, 0.0, 1.0));
-	translate = glm::translate(glm::mat4(1), glm::vec3(1.0f,1.0f,1.0f));
+	translate = glm::translate(glm::mat4(1), glm::vec3(0.0f,0.0f,0.0f));
 }
 
-// ###################### Transform_2D　設定 ###################### 
+// ###################### メンバ関数 ###################### 
 
 //スケール
 void Transform_2D::setScale(glm::vec2 s)
@@ -40,6 +40,13 @@ void Transform_2D::setSizeScale(glm::vec2 s)
 {
 	size = s;
 	scale = glm::scale(glm::mat4(1), glm::vec3(s.x, s.y, 0.0f));
+}
+
+//画像サイズを設定
+glm::vec2 Transform_2D::getSizeScale()
+{
+	return size;
+	
 }
 
 // ###################### デストラクタ ###################### 

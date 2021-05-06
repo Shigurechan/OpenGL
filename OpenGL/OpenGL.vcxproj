@@ -165,8 +165,8 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="DrawTest.cpp" />
-    <ClCompile Include="Sprite_2D.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -176,20 +176,22 @@
   <ItemGroup>
     <ClInclude Include="Actor.hpp" />
     <ClInclude Include="Camera.hpp" />
-    <ClInclude Include="Sprite_2D.hpp" />
-    <ClInclude Include="DrawTest.hpp" />
+    <ClInclude Include="Rectangle.hpp" />
+    <ClInclude Include="Sprite.hpp" />
     <ClInclude Include="Shader.hpp" />
     <ClInclude Include="Texture.hpp" />
     <ClInclude Include="Transform_2D.hpp" />
     <ClInclude Include="Window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\BasicMono_2D.frag" />
-    <None Include="Shader\BasicMono_2D.vert" />
-    <None Include="Shader\BasicMono_3D.frag" />
-    <None Include="Shader\BasicMono_3D.vert" />
-    <None Include="Shader\BasicTexture_2D.frag" />
-    <None Include="Shader\BasicTexture_2D.vert" />
+    <None Include="Shader\2D\BasicMono_2D.frag" />
+    <None Include="Shader\2D\BasicMono_2D.vert" />
+    <None Include="Shader\2D\BasicMono_VertColor_2D.frag" />
+    <None Include="Shader\2D\BasicMono_VertColor_2D.vert" />
+    <None Include="Shader\2D\BasicTexture_2D.frag" />
+    <None Include="Shader\2D\BasicTexture_2D.vert" />
+    <None Include="Shader\3D\BasicMono_3D.frag" />
+    <None Include="Shader\3D\BasicMono_3D.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
