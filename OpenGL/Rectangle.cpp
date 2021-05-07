@@ -4,7 +4,7 @@
 
 
 // ###################### コンストラクタ ###################### 
-Rectangle::Rectangle(std::shared_ptr<Window> w, const char* vert, const char* frag) : Transform_2D(), Shader()
+FrameWork::Rectangle::Rectangle(std::shared_ptr<Window> w, const char* vert, const char* frag) : Transform_2D(), Shader()
 {
 	
 	windowContext = w;	//ウインドウコンテキスト
@@ -57,7 +57,7 @@ Rectangle::Rectangle(std::shared_ptr<Window> w, const char* vert, const char* fr
 // ###################### メンバ関数 ###################### 
 
 //頂点カラーを設定
-void Rectangle::setVertexALLColor(glm::vec4 color)
+void FrameWork::Rectangle::setVertexALLColor(glm::vec4 color)
 {
 	
 
@@ -98,7 +98,7 @@ void Rectangle::setVertexALLColor(glm::vec4 color)
 
 
 //頂点カラーを設定
-void Rectangle::setVertexColor(int vertNum,glm::vec4 color)
+void FrameWork::Rectangle::setVertexColor(int vertNum,glm::vec4 color)
 {
 	float c = 1.0f / 255.0f;
 
@@ -115,7 +115,7 @@ void Rectangle::setVertexColor(int vertNum,glm::vec4 color)
 
 
 //描画
-void Rectangle::Draw(glm::vec2 start,glm::vec2 end,glm::vec4 color)
+void FrameWork::Rectangle::Draw(glm::vec2 start,glm::vec2 end,glm::vec4 color)
 {
 	if (isDefaultShader == true) 
 	{
@@ -161,7 +161,7 @@ void Rectangle::Draw(glm::vec2 start,glm::vec2 end,glm::vec4 color)
 }
 
 //回転描画
-void Rectangle::DrawRotate(glm::vec2 start, glm::vec2 end,float angle, glm::vec4 color)
+void FrameWork::Rectangle::DrawRotate(glm::vec2 start, glm::vec2 end,float angle, glm::vec4 color)
 {
 	if (isDefaultShader == true) 
 	{
@@ -212,7 +212,7 @@ void Rectangle::DrawRotate(glm::vec2 start, glm::vec2 end,float angle, glm::vec4
 
 
 //描画
-void Rectangle::DrawColor(glm::vec2 start, glm::vec2 end, glm::vec4 lu, glm::vec4 ru, glm::vec4 rd, glm::vec4 ld)
+void FrameWork::Rectangle::DrawColor(glm::vec2 start, glm::vec2 end, glm::vec4 lu, glm::vec4 ru, glm::vec4 rd, glm::vec4 ld)
 {
 	if (isDefaultShader == true) 
 	{
@@ -269,7 +269,7 @@ void Rectangle::DrawColor(glm::vec2 start, glm::vec2 end, glm::vec4 lu, glm::vec
 }
 
 //描画
-void Rectangle::DrawRotateColor(glm::vec2 start, glm::vec2 end,float angle ,glm::vec4 lu, glm::vec4 ru, glm::vec4 rd, glm::vec4 ld)
+void FrameWork::Rectangle::DrawRotateColor(glm::vec2 start, glm::vec2 end,float angle ,glm::vec4 lu, glm::vec4 ru, glm::vec4 rd, glm::vec4 ld)
 {
 	if (isDefaultShader == true) 
 	{
@@ -337,7 +337,7 @@ void Rectangle::DrawRotateColor(glm::vec2 start, glm::vec2 end,float angle ,glm:
 
 
 // ###################### デストラクタ ###################### 
-Rectangle::~Rectangle()
+FrameWork::Rectangle::~Rectangle()
 {
 
 }

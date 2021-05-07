@@ -1,7 +1,7 @@
 #include "Window.hpp"
 
 //コンストラクタ
-Window::Window(int width, int height, const char* title)
+FrameWork::Window::Window(int width, int height, const char* title)
 	:window(glfwCreateWindow(width, height, title, NULL, NULL))	
 {
 	std::fill(std::begin(keyBoard), std::end(keyBoard), 0);
@@ -34,7 +34,7 @@ Window::Window(int width, int height, const char* title)
 }
 
 //サイズ変更
-void Window::Resize(GLFWwindow* const win, int width, int height)
+void FrameWork::Window::Resize(GLFWwindow* const win, int width, int height)
 {
 	int fbWidth, fbHeight;
 	glfwGetFramebufferSize(win, &fbWidth, &fbHeight);
@@ -50,13 +50,13 @@ void Window::Resize(GLFWwindow* const win, int width, int height)
 }
 
 //ウインドウサイズを取得
-const glm::vec2 Window::getSize() const 
+const glm::vec2 FrameWork::Window::getSize() const
 {
 	return size;
 }
 
 //キー入力を取得
-const int Window::getKeyInput(int input)
+const int FrameWork::Window::getKeyInput(int input)
 {
 	int key = glfwGetKey(window, input);
 
@@ -78,7 +78,7 @@ const int Window::getKeyInput(int input)
 
 
 //bool 演算子
-Window::operator bool()
+FrameWork::Window::operator bool()
 {
 	glfwPollEvents();	//イベントを取り出す
 
@@ -114,13 +114,13 @@ Window::operator bool()
 }
 
 //ダブルバッファリング
-void Window::SwapBuffers()const
+void FrameWork::Window::SwapBuffers()const
 {
 	glfwSwapBuffers(window);
 }
 
 //デストラクタ
-Window::~Window()
+FrameWork::Window::~Window()
 {
 	glfwDestroyWindow(window);
 }

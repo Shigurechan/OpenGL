@@ -8,34 +8,36 @@
 
 #define PI ((float)3.14159265359f) //PI
 
-class Window
+namespace FrameWork
 {
-public:
+	class Window
+	{
+	public:
 
-	Window(int width = 640, int height = 480, const char* title = "Hello!");	//コンストラクタ
-	virtual ~Window();															//デストラクタ
+		Window(int width = 640, int height = 480, const char* title = "Hello!");	//コンストラクタ
+		virtual ~Window();															//デストラクタ
 
-	explicit operator bool();	//bool 演算子
-	void SwapBuffers()const;	//ダブルバッファリング
-
-	
-	const int getKeyInput(int input);	//キー入力
-	
+		explicit operator bool();	//bool 演算子
+		void SwapBuffers()const;	//ダブルバッファリング
 
 
-	//イベント処理
-	static void Resize(GLFWwindow* const win, int width, int height);						//サイズ変更
+		const int getKeyInput(int input);	//キー入力
 
-	const glm::vec2 getSize() const;		//サイズを取得
-	
-private:
 
-	GLFWwindow *const window;	//ウインドウコンテキスト
 
-	
-	glm::vec2 size;				//ウインドサイズ
-	char keyBoard[256];			//キー入力
-};
+		//イベント処理
+		static void Resize(GLFWwindow* const win, int width, int height);						//サイズ変更
 
+		const glm::vec2 getSize() const;		//サイズを取得
+
+	private:
+
+		GLFWwindow* const window;	//ウインドウコンテキスト
+
+
+		glm::vec2 size;				//ウインドサイズ
+		char keyBoard[256];			//キー入力
+	};
+}
 #endif
 

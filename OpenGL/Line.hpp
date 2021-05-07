@@ -5,34 +5,36 @@
 #include "Shader.hpp"
 
 #include <iostream>
-class Window;
 /*#########################################################################
 # Line クラス
 
 説明
 	線　描画
 ###########################################################################*/
-
-class Line : protected Transform_2D, public Shader
+namespace FrameWork
 {
-public:
-	Line(std::shared_ptr<Window> w,const char* vert = NULL, const char* frag = NULL);		//コンストラクタ
-	~Line();																										//デストラクタ
+	class Window;
 
-	void Draw(glm::vec2 start, glm::vec2 end, glm::vec4 color);													//描画
-	void DrawColor(glm::vec2 start,  glm::vec2 end, glm::vec4 startColor,glm::vec4 endColor);					//描画
-
-
-private:
-
-	Transform_2D::VertexColor vertex[2] =
+	class Line : protected FrameWork::Transform_2D, public Shader
 	{
-		{-0.5f,-0.5f,	0.0f,1.0f,0.0f,1.0f},
-		{0.5f,0.5f,		0.0f,1.0f,0.0f,1.0f}
+	public:
+		Line(std::shared_ptr<Window> w, const char* vert = NULL, const char* frag = NULL);		//コンストラクタ
+		~Line();																										//デストラクタ
+
+		void Draw(glm::vec2 start, glm::vec2 end, glm::vec4 color);													//描画
+		void DrawColor(glm::vec2 start, glm::vec2 end, glm::vec4 startColor, glm::vec4 endColor);					//描画
+
+
+	private:
+
+		Transform_2D::VertexColor vertex[2] =
+		{
+			{-0.5f,-0.5f,	0.0f,1.0f,0.0f,1.0f},
+			{0.5f,0.5f,		0.0f,1.0f,0.0f,1.0f}
+		};
+
+
+		std::shared_ptr<Window> windowContext;	//ウインドウコンテキスト
 	};
-
-
-	std::shared_ptr<Window> windowContext;	//ウインドウコンテキスト
-};
-
+}
 #endif

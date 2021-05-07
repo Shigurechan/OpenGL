@@ -19,9 +19,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Actor.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -57,9 +54,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Actor.hpp">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.hpp">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
@@ -114,6 +108,12 @@
       <Filter>リソース ファイル\2D</Filter>
     </None>
     <None Include="Shader\2D\BasicMono_VertColor_2D.frag">
+      <Filter>リソース ファイル\2D</Filter>
+    </None>
+    <None Include="Shader\2D\BasicText_2D.vert">
+      <Filter>リソース ファイル\2D</Filter>
+    </None>
+    <None Include="Shader\2D\BasicText_2D.frag">
       <Filter>リソース ファイル\2D</Filter>
     </None>
   </ItemGroup>

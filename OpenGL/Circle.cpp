@@ -2,7 +2,7 @@
 #include "Window.hpp"
 
 //コンストラクタ
-Circle::Circle(std::shared_ptr<Window> w,const char* vert, const char* frag) : Transform_2D(),Shader()
+FrameWork::Circle::Circle(std::shared_ptr<Window> w,const char* vert, const char* frag) : Transform_2D(),Shader()
 {
 	windowContext = w;	//ウインドウコンテキスト
 
@@ -40,7 +40,7 @@ Circle::Circle(std::shared_ptr<Window> w,const char* vert, const char* frag) : T
 
 
 //描画
-void Circle::Draw(glm::vec2 pos, int num, float r,glm::vec4 color)
+void FrameWork::Circle::Draw(glm::vec2 pos, int num, float r,glm::vec4 color)
 {
 	if (isDefaultShader == true) 
 	{
@@ -110,7 +110,7 @@ void Circle::Draw(glm::vec2 pos, int num, float r,glm::vec4 color)
 
 
 //デストラクタ
-Circle::~Circle()
+FrameWork::Circle::~Circle()
 {
 
 }

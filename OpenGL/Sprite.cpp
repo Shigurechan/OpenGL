@@ -14,7 +14,7 @@
 
 //"Shader/BasicTexture_2D.vert", "Shader/BasicTexture_2D.frag"
 //コンストラクタ
-Sprite::Sprite(std::shared_ptr<Window> w,const char* vert,const char* frag) : Transform_2D(),Shader()
+FrameWork::Sprite::Sprite(std::shared_ptr<Window> w,const char* vert,const char* frag) : Transform_2D(),Shader()
 {
 	windowContext = w;	//ウインドウコンテキスト
 
@@ -75,7 +75,7 @@ Sprite::Sprite(std::shared_ptr<Window> w,const char* vert,const char* frag) : Tr
 // ###################### メンバ関数 ###################### 
 
 //テクスチャ設定
-void Sprite::setTexture(TextureData tex)
+void FrameWork::Sprite::setTexture(TextureData tex)
 {
 	
 	textureID.push_back(tex);	//テクスチャーIDに追加
@@ -105,7 +105,7 @@ void Sprite::setTexture(TextureData tex)
 }
 
 //描画するテクスチャ番号を指定
-void Sprite::setDrawTextureID(unsigned char id)
+void FrameWork::Sprite::setDrawTextureID(unsigned char id)
 {
 	assert(id < textureID.size());
 	glActiveTexture(textureID.at(id).textureNumber);
@@ -113,7 +113,7 @@ void Sprite::setDrawTextureID(unsigned char id)
 }
 
 //描画
-void Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum)
+void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum)
 {
 	if (isDefaultShader == true)
 	{
@@ -148,7 +148,7 @@ void Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum)
 }
 
 //回転描画
-void Sprite::DrawRotateGraph(glm::vec2 pos, float angle,unsigned char texNum)
+void FrameWork::Sprite::DrawRotateGraph(glm::vec2 pos, float angle,unsigned char texNum)
 {
 	if (isDefaultShader == true)
 	{
@@ -181,7 +181,7 @@ void Sprite::DrawRotateGraph(glm::vec2 pos, float angle,unsigned char texNum)
 }
 
 //スケール描画
-void Sprite::DrawExtendGraph(glm::vec2 pos, glm::vec2 s,unsigned char texNum)
+void FrameWork::Sprite::DrawExtendGraph(glm::vec2 pos, glm::vec2 s,unsigned char texNum)
 {
 	if (isDefaultShader == true)
 	{
@@ -216,7 +216,7 @@ void Sprite::DrawExtendGraph(glm::vec2 pos, glm::vec2 s,unsigned char texNum)
 
 
 //デストラクタ
-Sprite::~Sprite()
+FrameWork::Sprite::~Sprite()
 {
 	//テクスチャーIDを開放
 	for (int i = 0; i < textureID.size(); i++)

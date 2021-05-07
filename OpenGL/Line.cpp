@@ -3,7 +3,7 @@
 
 
 //コンストラクタ
-Line::Line(std::shared_ptr<Window> w, const char* vert, const char* frag) : Transform_2D(),Shader()
+FrameWork::Line::Line(std::shared_ptr<Window> w, const char* vert, const char* frag) : Transform_2D(),Shader()
 {
 
 	windowContext = w;	//ウインドウコンテキスト
@@ -57,7 +57,7 @@ Line::Line(std::shared_ptr<Window> w, const char* vert, const char* frag) : Tran
 
 
 //描画
-void Line::Draw(glm::vec2 start, glm::vec2 end, glm::vec4 color)
+void FrameWork::Line::Draw(glm::vec2 start, glm::vec2 end, glm::vec4 color)
 {
 	if (isDefaultShader == true)
 	{
@@ -127,7 +127,7 @@ void Line::Draw(glm::vec2 start, glm::vec2 end, glm::vec4 color)
 
 
 //頂点カラー描画
-void Line::DrawColor(glm::vec2 start, glm::vec2 end,glm::vec4 startColor, glm::vec4 endColor)
+void FrameWork::Line::DrawColor(glm::vec2 start, glm::vec2 end,glm::vec4 startColor, glm::vec4 endColor)
 {
 	if (isDefaultShader == true)
 	{
@@ -204,7 +204,7 @@ void Line::DrawColor(glm::vec2 start, glm::vec2 end,glm::vec4 startColor, glm::v
 
 
 //デストラクタ
-Line::~Line()
+FrameWork::Line::~Line()
 {
 
 }

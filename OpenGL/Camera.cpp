@@ -10,7 +10,7 @@
 
 
 // ###################### コンストラクタ ###################### 
-Camera::Camera(std::shared_ptr<Window> w)
+FrameWork::Camera::Camera(std::shared_ptr<Window> w)
 {
 	windowContext = w;	//ウインドウコンテキスト
 
@@ -29,7 +29,7 @@ Camera::Camera(std::shared_ptr<Window> w)
 // ###################### 設定　関係 ###################### 
 
 //座標
-void Camera::setPosition(glm::vec3 p)
+void FrameWork::Camera::setPosition(glm::vec3 p)
 {
 	vecPosition = p;	//座標
 	view = glm::lookAt(vecPosition, vecLook, glm::vec3(0, 1, 0));
@@ -37,7 +37,7 @@ void Camera::setPosition(glm::vec3 p)
 }
 
 //視線
-void Camera::setLook(glm::vec3 l)
+void FrameWork::Camera::setLook(glm::vec3 l)
 {
 	vecLook = l;		//向き
 	view = glm::lookAt(vecPosition, vecLook, glm::vec3(0, 1, 0));
@@ -46,13 +46,13 @@ void Camera::setLook(glm::vec3 l)
 // ###################### 取得　関係 ###################### 
 
 //座標
-glm::vec3 Camera::getPosition()
+glm::vec3 FrameWork::Camera::getPosition()
 {
 	return vecPosition;
 }
 
 //視線
-glm::vec3 Camera::getLook()
+glm::vec3 FrameWork::Camera::getLook()
 {
 	return vecLook;
 }
@@ -60,13 +60,13 @@ glm::vec3 Camera::getLook()
 //カメラ行列を取得
 
 //3Dカメラ
-glm::mat4 Camera::getViewProjection()
+glm::mat4 FrameWork::Camera::getViewProjection()
 {
 	return projection * view;
 }
 
 //2Dカメラ
-glm::mat4 Camera::getProjection_2D()
+glm::mat4 FrameWork::Camera::getProjection_2D()
 {
 	return glm::ortho(0.0f, windowContext->getSize().x, windowContext->getSize().y, 0.0f, -1.0f, 1.0f);
 }
@@ -74,7 +74,7 @@ glm::mat4 Camera::getProjection_2D()
 
 
 // ###################### デストラクタ ###################### 
-Camera::~Camera()
+FrameWork::Camera::~Camera()
 {
 
 }

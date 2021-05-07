@@ -10,49 +10,50 @@
 //#include <glfw/include/GLFW/glfw3.h>
 
 
-
-class Shader
+namespace FrameWork
 {
-public:
-	Shader();	//コンストラクタ
-	~Shader();	//デストラクタ
+	class Shader
+	{
+	public:
+		Shader();	//コンストラクタ
+		~Shader();	//デストラクタ
 
-	bool LoadShader(const char* vert,const char* frag);	//シェーダー読み込み
-
-
-	void setEnable();	//有効
-	void setDisable();	//無効
-
-	void setBindAttribVertex(const char* str);		//頂点シェーダーに属性変数を関連ずける
-	void setBindAttribFragment(const char* str);	//フラグメントシェーダーに属性変数を関連ずける
-	GLint getAttribLocation(const char* str);		//locationを取得
+		bool LoadShader(const char* vert, const char* frag);	//シェーダー読み込み
 
 
-	//Uniform 設定
-	void setUniform1f(const char* name, const float vec);
-	void setUniform2f(const char* name, const glm::vec2 vec);
-	void setUniform3f(const char* name, const glm::vec3 vec);
-	void setUniform4f(const char* name, const glm::vec4 vec);
+		void setEnable();	//有効
+		void setDisable();	//無効
 
-	//Unform行列　設定
-	void setUniformMatrix2fv(const char* name, const glm::mat2 m);
-	void setUniformMatrix3fv(const char* name, const glm::mat3 m);
-	void setUniformMatrix4fv(const char* name, const glm::mat4 m);
+		void setBindAttribVertex(const char* str);		//頂点シェーダーに属性変数を関連ずける
+		void setBindAttribFragment(const char* str);	//フラグメントシェーダーに属性変数を関連ずける
+		GLint getAttribLocation(const char* str);		//locationを取得
 
 
+		//Uniform 設定
+		void setUniform1f(const char* name, const float vec);
+		void setUniform2f(const char* name, const glm::vec2 vec);
+		void setUniform3f(const char* name, const glm::vec3 vec);
+		void setUniform4f(const char* name, const glm::vec4 vec);
 
-private:
+		//Unform行列　設定
+		void setUniformMatrix2fv(const char* name, const glm::mat2 m);
+		void setUniformMatrix3fv(const char* name, const glm::mat3 m);
+		void setUniformMatrix4fv(const char* name, const glm::mat4 m);
 
 
-	GLuint CreateProgram(const char* vsrc, const char* fsrc);				//プログラムオブジェクトを作成
-	GLboolean CompileInfoLog(GLuint shader, const char* str);				//コンパイルエラーログを取得
-	GLboolean ProgramInfoLog(GLuint program);								//プログラムログを取得
-	bool ReadShaderSource(const char* name, std::vector<GLchar>& buffer);	//ソースファイルを読み込み
-	GLuint loadProgram(const char* vert, const char* frag);					//プログラムをオブジェクトをロード
 
-	GLuint program;	//プログラムオブジェクトシェーダー
+	private:
 
-};
 
+		GLuint CreateProgram(const char* vsrc, const char* fsrc);				//プログラムオブジェクトを作成
+		GLboolean CompileInfoLog(GLuint shader, const char* str);				//コンパイルエラーログを取得
+		GLboolean ProgramInfoLog(GLuint program);								//プログラムログを取得
+		bool ReadShaderSource(const char* name, std::vector<GLchar>& buffer);	//ソースファイルを読み込み
+		GLuint loadProgram(const char* vert, const char* frag);					//プログラムをオブジェクトをロード
+
+		GLuint program;	//プログラムオブジェクトシェーダー
+
+	};
+}
 #endif
 

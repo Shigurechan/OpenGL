@@ -2,7 +2,7 @@
 #include "Actor.hpp"
 
 // ###################### コンストラクタ ###################### 
-Transform_2D::Transform_2D()
+FrameWork::Transform_2D::Transform_2D()
 {
 	size = glm::vec2(0,0);
 	vao = 0;
@@ -18,13 +18,13 @@ Transform_2D::Transform_2D()
 // ###################### メンバ関数 ###################### 
 
 //スケール
-void Transform_2D::setScale(glm::vec2 s)
+void FrameWork::Transform_2D::setScale(glm::vec2 s)
 {
 	scale = glm::scale(glm::mat4(1), glm::vec3(s.x,s.y,0.0f) + glm::vec3(size.x,size.y,0.0f));
 }
 
 //回転
-void Transform_2D::setRotate(float a)
+void FrameWork::Transform_2D::setRotate(float a)
 {
 	glm::mat4 m = glm::translate(translate, glm::vec3(size.x * 0.5f, size.y * 0.5f, 0));		//平行移動
 	rotate = glm::rotate(m, a, glm::vec3(0.0,0.0,1.0));											//回転	
@@ -33,27 +33,27 @@ void Transform_2D::setRotate(float a)
 }
 
 //平行移動
-void Transform_2D::setTranslate(glm::vec3 t)
+void FrameWork::Transform_2D::setTranslate(glm::vec3 t)
 {	
 	translate = glm::translate(glm::mat4(1), t);
 }
 
 //画像サイズを設定
-void Transform_2D::setSizeScale(glm::vec2 s)
+void FrameWork::Transform_2D::setSizeScale(glm::vec2 s)
 {
 	size = s;
 	scale = glm::scale(glm::mat4(1), glm::vec3(s.x, s.y, 0.0f));
 }
 
 //画像サイズを設定
-glm::vec2 Transform_2D::getSizeScale()
+glm::vec2 FrameWork::Transform_2D::getSizeScale()
 {
 	return size;
 	
 }
 
 // ###################### デストラクタ ###################### 
-Transform_2D::~Transform_2D()
+FrameWork::Transform_2D::~Transform_2D()
 {
 
 }
