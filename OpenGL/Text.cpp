@@ -119,7 +119,6 @@ void FrameWork::Text::Draw(std::string text, float x, float y, float scale, glm:
     //Unform
     setUniform3f("textColor",color);
     setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, windowContext->getSize().y, 0.0f, -1.0f, 1.0f));
-
     
     // iterate through all characters
     std::string::const_iterator c;

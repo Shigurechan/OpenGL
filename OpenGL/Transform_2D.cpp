@@ -1,5 +1,4 @@
 #include "Transform_2D.hpp"
-#include "Actor.hpp"
 
 // ###################### コンストラクタ ###################### 
 FrameWork::Transform_2D::Transform_2D()

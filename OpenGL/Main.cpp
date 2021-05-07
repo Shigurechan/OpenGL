@@ -6,8 +6,6 @@
 #include <glfw/include/GLFW/glfw3.h>
 
 
-
-
 #include "Window.hpp"
 #include "Sprite.hpp"
 #include "Rectangle.hpp"
@@ -38,11 +36,7 @@ int main()
 
 // #############################################################################
 
-
-
-	FrameWork::Sprite t(window);
-	
-	
+	FrameWork::Text t(window);
 
 	glm::vec2 pos = glm::vec2(540,0);
 	glm::vec2 scale = glm::vec2(0,0);
@@ -54,8 +48,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//カラーバッファ指定色でクリア
 
 
-		
-		//t.Draw("Hello World",100.0f,100.0f,1.0f,glm::vec3(1,1,1));
+		t.Draw("Hello World", 100, 100, 1.0f, glm::vec4(1,1,1,1));
+
 
 
 
