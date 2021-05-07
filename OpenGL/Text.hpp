@@ -13,14 +13,13 @@ namespace FrameWork
 {
     class Window;
 
-
     class Text : protected FrameWork::Transform_2D, public Shader
     {
     public:
         Text(std::shared_ptr<Window> w, const char* vert = NULL, const char* frag = NULL);		//コンストラクタ
-        ~Text();	//デストラクタ
+        ~Text();	                                                                            //デストラクタ
 
-        void Draw(std::string text, float x, float y, float scale, glm::vec3 color);
+        void Draw(glm::vec2 pos, std::string text,float scale, glm::vec3 color);    //描画
 
 
     private:
@@ -32,10 +31,9 @@ namespace FrameWork
             unsigned int Advance;    // Offset to advance to next glyph
         };
 
-        std::map<char, Character> Characters;
-
-
+        std::map<char, Character> Characters;   //文字データ
         std::shared_ptr<Window> windowContext;  //ウインドウコンテキスト
+        int charSize;   //文字の大きさ(ピクセル)
     };
 
 }

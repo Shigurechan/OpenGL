@@ -52,8 +52,8 @@ FrameWork::Text::Text(std::shared_ptr<Window> w, const char* vert, const char* f
 
     }
     
-    
-    FT_Set_Pixel_Sizes(face,0,48);  //ピクセルサイズを指定
+    charSize = 24;  //文字サイズを指定
+    FT_Set_Pixel_Sizes(face,0,charSize);  //ピクセルサイズを指定
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
 
@@ -108,17 +108,21 @@ FrameWork::Text::Text(std::shared_ptr<Window> w, const char* vert, const char* f
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void FrameWork::Text::Draw(std::string text, float x, float y, float scale, glm::vec3 color)
+void FrameWork::Text::Draw(glm::vec2 pos,std::string text,float scale, glm::vec3 color)
 {
     setEnable();    //シェーダーを有効にする
+
+    pos.y = windowContext->getSize().y - pos.y - charSize;
 
     //テクスチャをアクティブ
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(vao);
-
+    
     //Unform
     setUniform3f("textColor",color);
-    setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, windowContext->getSize().y, 0.0f, -1.0f, 1.0f));
+
+//    glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
+    setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, 0.0f, windowContext->getSize().y));
     
     // iterate through all characters
     std::string::const_iterator c;
@@ -126,9 +130,9 @@ void FrameWork::Text::Draw(std::string text, float x, float y, float scale, glm:
     {
         Character ch = Characters[*c];
 
-        printf("%f\n",x);
-        float xpos = x + ch.Bearing.x * scale;
-        float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+    
+        float xpos = pos.x + ch.Bearing.x * scale;
+        float ypos = pos.y - (ch.Size.y - ch.Bearing.y) * scale;
 
         float w = ch.Size.x * scale;
         float h = ch.Size.y * scale;
@@ -152,7 +156,7 @@ void FrameWork::Text::Draw(std::string text, float x, float y, float scale, glm:
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-        x += ((ch.Advance >> 6) * scale); // bitshift by 6 to get value in pixels (2^6 = 64)
+        pos.x += ((ch.Advance >> 6) * scale); // bitshift by 6 to get value in pixels (2^6 = 64)
         
     }
 

@@ -16,6 +16,7 @@ uniform mat4 uViewProjection;	//ビュープロジェクション行列
 
 void main()
 {
+
 	vec4 vertex = vec4(vertexPosition.x,vertexPosition.y,0.0,1.0);		//頂点座標
 	gl_Position =  (uViewProjection * vertex);
 	
