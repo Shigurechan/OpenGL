@@ -149,13 +149,12 @@ void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum,float r,gl
 	//  ################################################### 
 
 	//Transform
-	setSizeScale(glm::vec2((endSize.x - startSize.x), (endSize.y - startSize.y)));//サイズ	
-	setScale(s);																//スケール
-
+	setSizeScale(glm::vec2((endSize.x - startSize.x), (endSize.y - startSize.y)));	//サイズ	
+	setScale(s);																	//スケール
+	setRotate(r);																	//回転
 
 	setTranslate(glm::vec3(pos.x + (getSizeScale().x / 2.0f), pos.y + ((getSizeScale().y) / 2.0f), 0.0f));	//平行移動
 
-	setRotate(r);																//回転
 
 
 	//uniform
