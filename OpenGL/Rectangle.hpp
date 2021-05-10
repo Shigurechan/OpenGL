@@ -25,14 +25,7 @@ namespace FrameWork
 		Rectangle(std::shared_ptr<Window> w, const char* vert = NULL, const char* frag = NULL);										//コンストラクタ
 		~Rectangle();																									//デストラクタ
 
-
-		void Draw(glm::vec2 start, glm::vec2 end, glm::vec4 color);																	// 描画
-		void DrawRotate(glm::vec2 start, glm::vec2 end, float angle, glm::vec4 color);												// 回転 描画
-
-		void DrawColor(glm::vec2 start, glm::vec2 end, glm::vec4 lu, glm::vec4 ru, glm::vec4 rd, glm::vec4 ld);						// 頂点色描画
-		void DrawRotateColor(glm::vec2 start, glm::vec2 end, float angle, glm::vec4 lu, glm::vec4 ru, glm::vec4 rd, glm::vec4 ld);	// 回転 頂点色描画
-
-
+		void Draw(glm::vec2 start, glm::vec2 end, float r, glm::vec2 s, glm::vec4 color);	// 描画		
 	private:
 
 		//塗りつぶし矩形

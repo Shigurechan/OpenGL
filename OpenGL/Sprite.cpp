@@ -94,7 +94,7 @@ void FrameWork::Sprite::setTexture(TextureData tex)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	setSizeScale(glm::vec3(textureID.back().size.x, textureID.back().size.y, 1.0f));	//スプライトサイズを設定
+	//setSizeScale(glm::vec3(textureID.back().size.x, textureID.back().size.y, 1.0f));	//スプライトサイズを設定
 
 
 	textureID.back().textureUnitNumber = GL_TEXTURE0 + (unsigned short int)textureUnitCount;
@@ -121,56 +121,42 @@ void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum,float r,gl
 	setDrawTextureID((unsigned char)texNum);	//テクチャーユニットを設定
 
 	// ####################### 頂点属性のUVデータを更新  #######################
-	if ((startSize.x > 0 && startSize.y > 0) && (endSize.x > 0 && endSize.y > 0))
-	{
-		//UVサイズからピクセルサイズを算出
-		const float sizeX = 1.0f / (float)textureID.at(texNum).size.x;
-		const float sizeY = 1.0f / (float)textureID.at(texNum).size.y;
+	//UVサイズからピクセルサイズを算出
+	const float sizeX = 1.0f / (float)textureID.at(texNum).size.x;
+	const float sizeY = 1.0f / (float)textureID.at(texNum).size.y;
 	
-		//左上
-		rectangleVertex[0].uv[0] = sizeX * startSize.x;
-		rectangleVertex[0].uv[1] = 1.0f - (sizeY * startSize.y);
-		//std::cout << rectangleVertex[0].uv[1] << std::endl;
+	//左上
+	rectangleVertex[0].uv[0] = sizeX * startSize.x;
+	rectangleVertex[0].uv[1] = 1.0f - (sizeY * startSize.y);
 
-		//左下
-		rectangleVertex[1].uv[0] = sizeX * startSize.x;
-		rectangleVertex[1].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
-		rectangleVertex[4].uv[0] = sizeX * startSize.x;
-		rectangleVertex[4].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
+	//左下
+	rectangleVertex[1].uv[0] = sizeX * startSize.x;
+	rectangleVertex[1].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
+	rectangleVertex[4].uv[0] = sizeX * startSize.x;
+	rectangleVertex[4].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
 
-//		std::cout << rectangleVertex[4].uv[1] << std::endl;
-//		std::cout << rectangleVertex[5].uv[1] << std::endl;
+	//右上
+	rectangleVertex[2].uv[0] = (sizeX * endSize.x);
+	rectangleVertex[2].uv[1] = 1.0f - (sizeY * startSize.y);
+	rectangleVertex[3].uv[0] = (sizeX * endSize.x);
+	rectangleVertex[3].uv[1] = 1.0f - (sizeY * startSize.y);
 
+	//右下
+	rectangleVertex[5].uv[0] = sizeX * endSize.x;
+	rectangleVertex[5].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
 
-
-		//右上
-		rectangleVertex[2].uv[0] = (sizeX * endSize.x);
-		rectangleVertex[2].uv[1] = 1.0f - (sizeY * startSize.y);
-		rectangleVertex[3].uv[0] = (sizeX * endSize.x);
-		rectangleVertex[3].uv[1] = 1.0f - (sizeY * startSize.y);
-
-		//std::cout << rectangleVertex[2].uv[1] << std::endl;
-		//std::cout << rectangleVertex[3].uv[1] << std::endl;
-
-
-
-		//右下
-		rectangleVertex[5].uv[0] = sizeX * endSize.x;
-		rectangleVertex[5].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
-
-
-
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Transform_2D::VertexUV) * 6, rectangleVertex);	//頂点データを再変更	
-	}
+	
 	//  ################################################### 
 
+	//Transform
+	setSizeScale(glm::vec2((endSize.x - startSize.x), (endSize.y - startSize.y)));//サイズ	
+	setScale(s);																//スケール
 
-	setSizeScale(glm::vec3(endSize.x - startSize.x, endSize.y - startSize.y, 1.0f));	//スプライトサイズを設定
 
-	// Transform
-	setTranslate(glm::vec3(pos.x + (textureID.at(texNum).size.x / 2.0f), pos.y + (textureID.at(texNum).size.y / 2.0f), 0.0f));	//平行移動
-	setRotate(r);	//回転
-	setScale(s);	//スケール
+	setTranslate(glm::vec3(pos.x + (getSizeScale().x / 2.0f), pos.y + ((getSizeScale().y) / 2.0f), 0.0f));	//平行移動
+
+	setRotate(r);																//回転
+
 
 	//uniform
 	setUniformMatrix4fv("uTranslate", translate);
@@ -181,6 +167,7 @@ void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum,float r,gl
 
 
 	//バインド＆描画
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Transform_2D::VertexUV) * 6, rectangleVertex);	//頂点データを再変更	
 	glBindVertexArray(vao);
 	glBindTexture(GL_TEXTURE_2D, textureID.at(texNum).ID);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
