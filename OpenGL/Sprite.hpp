@@ -24,9 +24,7 @@ namespace FrameWork
 		~Sprite();										//デストラクタ
 
 		// ###################### メンバ関数 ###################### 	
-		void DrawGraph(glm::vec2 pos, unsigned char texNum);							//描画
-		void DrawRotateGraph(glm::vec2 pos, float angle, unsigned char texNum);		//回転描画
-		void DrawExtendGraph(glm::vec2 pos, glm::vec2 scale, unsigned char texNum);	//スケール描画
+		void DrawGraph(glm::vec2 pos, unsigned char texNum,float r, glm::vec2 s,glm::vec2 startSize, glm::vec2 endSize);	//描画
 
 		void setTexture(TextureData tex);			//テクスチャ設定
 
@@ -49,7 +47,6 @@ namespace FrameWork
 		void setDrawTextureID(unsigned char id);	//描画するテクスチャ番号を指定
 
 		std::vector<TextureData> textureID;	//テクスチャーID
-		unsigned char textureNumber;		//テクスチャーIDを選択
 		unsigned char textureUnitCount;		//テクスチャー番号をカウント
 
 		std::shared_ptr<Window> windowContext;	//Windowコンテキスト

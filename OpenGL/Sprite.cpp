@@ -38,10 +38,9 @@ FrameWork::Sprite::Sprite(std::shared_ptr<Window> w,const char* vert,const char*
 	LoadShader(vert, frag);	//シェーダーロード
 	
 
-	//テクスチャ関係
-	textureNumber = 0;
-	textureID = std::vector<TextureData>();
-	textureUnitCount = 0;
+	//テクスチャ関係	
+	textureID = std::vector<TextureData>(0);		//テクスチャーデータ
+	textureUnitCount = 0;						//テクスチャユニット数をカウント
 
 	
 	//vao
@@ -98,22 +97,21 @@ void FrameWork::Sprite::setTexture(TextureData tex)
 	setSizeScale(glm::vec3(textureID.back().size.x, textureID.back().size.y, 1.0f));	//スプライトサイズを設定
 
 
-	textureID.back().textureNumber = GL_TEXTURE0 + textureUnitCount;
-	assert(textureID.back().textureNumber < GL_TEXTURE31);//エラー表示
+	textureID.back().textureUnitNumber = GL_TEXTURE0 + (unsigned short int)textureUnitCount;
+	assert(textureID.back().textureUnitNumber < GL_TEXTURE31);//エラー表示
 
 	textureUnitCount++;	//テクスチャーユニットカウントに加算
 }
 
-//描画するテクスチャ番号を指定
+//描画するアクティブなテクスチャに指定
 void FrameWork::Sprite::setDrawTextureID(unsigned char id)
 {
 	assert(id < textureID.size());
-	glActiveTexture(textureID.at(id).textureNumber);
-	textureNumber = textureID.at(id).textureNumber;
+	glActiveTexture(textureID.at(id).textureUnitNumber);	
 }
 
 //描画
-void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum)
+void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum,float r,glm::vec2 s,glm::vec2 startSize,glm::vec2 endSize)
 {
 	if (isDefaultShader == true)
 	{
@@ -121,98 +119,69 @@ void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum)
 	}
 
 	setDrawTextureID((unsigned char)texNum);	//テクチャーユニットを設定
-	glBindVertexArray(vao);
-	glBindTexture(GL_TEXTURE_2D, textureID.at(texNum).ID);
+
+	//UVサイズからピクセルサイズを算出
+	const float sizeX = 1.0f / (float)textureID.at(texNum).size.x;
+	const float sizeY = 1.0f / (float)textureID.at(texNum).size.y;
 	
+	// ####################### 頂点属性のUVデータを更新  #######################
+	 
+	//左上
+	rectangleVertex[0].uv[0] = sizeX * startSize.x;
+	rectangleVertex[0].uv[1] = 1.0f - (sizeY * startSize.y);
+
+	//左下
+	rectangleVertex[1].uv[0] = sizeX * startSize.x;
+	rectangleVertex[1].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
+	rectangleVertex[4].uv[0] = sizeX * startSize.x;
+	rectangleVertex[4].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
+
+	//右上
+	rectangleVertex[2].uv[0] = (sizeX * endSize.x);
+	rectangleVertex[2].uv[1] = (sizeY * startSize.y);
+	rectangleVertex[3].uv[0] = (sizeX * endSize.x);
+	rectangleVertex[3].uv[1] = (sizeY * startSize.y);
+
+	//右下
+	rectangleVertex[5].uv[0] = sizeX * endSize.x;
+	rectangleVertex[5].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.x));
+	
+	glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(Transform_2D::VertexUV) * 6,rectangleVertex);	//頂点データを再変更	
+	//  ################################################### 
 
 
+	setSizeScale(glm::vec3(endSize.x - startSize.x, endSize.y - startSize.y, 1.0f));	//スプライトサイズを設定
+
+	// Transform
 	setTranslate(glm::vec3(pos.x + (textureID.at(texNum).size.x / 2.0f), pos.y + (textureID.at(texNum).size.y / 2.0f), 0.0f));	//平行移動
-
-	//uniform
-	setUniformMatrix4fv("uTranslate", translate);
-	setUniformMatrix4fv("uRotate", rotate);
-	setUniformMatrix4fv("uScale", scale);
-	setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, windowContext->getSize().y, 0.0f, -1.0f, 1.0f));
-	
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	
-	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	if (isDefaultShader == true)
-	{
-		setDisable();
-	}
-
-}
-
-//回転描画
-void FrameWork::Sprite::DrawRotateGraph(glm::vec2 pos, float angle,unsigned char texNum)
-{
-	if (isDefaultShader == true)
-	{
-		setEnable();
-	}
-
-	glBindVertexArray(vao);
-	glBindTexture(GL_TEXTURE_2D, textureID.at(texNum).ID);
-
-	setRotate(angle);	//回転
-	setTranslate(glm::vec3(pos.x + (textureID.at(texNum).size.x / 2.0f), pos.y + (textureID.at(texNum).size.y / 2.0f), 0.0f));	//平行移動
-
-	//uniform
-	setUniformMatrix4fv("uTranslate", translate);
-	setUniformMatrix4fv("uRotate", rotate);
-	setUniformMatrix4fv("uScale", scale);
-	setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, windowContext->getSize().y, 0.0f, -1.0f, 1.0f));
-
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-
-	if (isDefaultShader == true)
-	{
-		setDisable();
-	}
-
-}
-
-//スケール描画
-void FrameWork::Sprite::DrawExtendGraph(glm::vec2 pos, glm::vec2 s,unsigned char texNum)
-{
-	if (isDefaultShader == true)
-	{
-		setEnable();
-	}
-
-	glBindVertexArray(vao);
-	glBindTexture(GL_TEXTURE_2D, textureID.at(texNum).ID);
-
+	setRotate(r);	//回転
 	setScale(s);	//スケール
-	setTranslate(glm::vec3(pos.x + (textureID.at(texNum).size.x / 2.0f), pos.y + (textureID.at(texNum).size.y / 2.0f), 0.0f));	//平行移動
 
-	//Uniform
+	//uniform
 	setUniformMatrix4fv("uTranslate", translate);
 	setUniformMatrix4fv("uRotate", rotate);
 	setUniformMatrix4fv("uScale", scale);
 	setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, windowContext->getSize().y, 0.0f, -1.0f, 1.0f));
+	
 
 
+	//バインド＆描画
+	glBindVertexArray(vao);
+	glBindTexture(GL_TEXTURE_2D, textureID.at(texNum).ID);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
+	
+
+	//バインドを解除
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
-
 	if (isDefaultShader == true)
 	{
 		setDisable();
 	}
 
-}
 
+}
 
 
 //デストラクタ
