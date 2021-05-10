@@ -120,33 +120,48 @@ void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum,float r,gl
 
 	setDrawTextureID((unsigned char)texNum);	//テクチャーユニットを設定
 
-	//UVサイズからピクセルサイズを算出
-	const float sizeX = 1.0f / (float)textureID.at(texNum).size.x;
-	const float sizeY = 1.0f / (float)textureID.at(texNum).size.y;
-	
 	// ####################### 頂点属性のUVデータを更新  #######################
-	 
-	//左上
-	rectangleVertex[0].uv[0] = sizeX * startSize.x;
-	rectangleVertex[0].uv[1] = 1.0f - (sizeY * startSize.y);
-
-	//左下
-	rectangleVertex[1].uv[0] = sizeX * startSize.x;
-	rectangleVertex[1].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
-	rectangleVertex[4].uv[0] = sizeX * startSize.x;
-	rectangleVertex[4].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
-
-	//右上
-	rectangleVertex[2].uv[0] = (sizeX * endSize.x);
-	rectangleVertex[2].uv[1] = (sizeY * startSize.y);
-	rectangleVertex[3].uv[0] = (sizeX * endSize.x);
-	rectangleVertex[3].uv[1] = (sizeY * startSize.y);
-
-	//右下
-	rectangleVertex[5].uv[0] = sizeX * endSize.x;
-	rectangleVertex[5].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.x));
+	if ((startSize.x > 0 && startSize.y > 0) && (endSize.x > 0 && endSize.y > 0))
+	{
+		//UVサイズからピクセルサイズを算出
+		const float sizeX = 1.0f / (float)textureID.at(texNum).size.x;
+		const float sizeY = 1.0f / (float)textureID.at(texNum).size.y;
 	
-	glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(Transform_2D::VertexUV) * 6,rectangleVertex);	//頂点データを再変更	
+		//左上
+		rectangleVertex[0].uv[0] = sizeX * startSize.x;
+		rectangleVertex[0].uv[1] = 1.0f - (sizeY * startSize.y);
+		//std::cout << rectangleVertex[0].uv[1] << std::endl;
+
+		//左下
+		rectangleVertex[1].uv[0] = sizeX * startSize.x;
+		rectangleVertex[1].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
+		rectangleVertex[4].uv[0] = sizeX * startSize.x;
+		rectangleVertex[4].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
+
+//		std::cout << rectangleVertex[4].uv[1] << std::endl;
+//		std::cout << rectangleVertex[5].uv[1] << std::endl;
+
+
+
+		//右上
+		rectangleVertex[2].uv[0] = (sizeX * endSize.x);
+		rectangleVertex[2].uv[1] = 1.0f - (sizeY * startSize.y);
+		rectangleVertex[3].uv[0] = (sizeX * endSize.x);
+		rectangleVertex[3].uv[1] = 1.0f - (sizeY * startSize.y);
+
+		//std::cout << rectangleVertex[2].uv[1] << std::endl;
+		//std::cout << rectangleVertex[3].uv[1] << std::endl;
+
+
+
+		//右下
+		rectangleVertex[5].uv[0] = sizeX * endSize.x;
+		rectangleVertex[5].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
+
+
+
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Transform_2D::VertexUV) * 6, rectangleVertex);	//頂点データを再変更	
+	}
 	//  ################################################### 
 
 
