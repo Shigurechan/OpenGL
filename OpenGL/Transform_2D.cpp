@@ -25,10 +25,7 @@ void FrameWork::Transform_2D::setScale(glm::vec2 s)
 //‰ñ“]
 void FrameWork::Transform_2D::setRotate(float a)
 {
-	glm::mat4 m = glm::translate(translate, glm::vec3(size.x * 0.5f, size.y * 0.5f, 0));		//•½sˆÚ“®
-	rotate = glm::rotate(m, a, glm::vec3(0.0,0.0,1.0));											//‰ñ“]	
-	m = glm::translate(translate, glm::vec3(-size.x * 0.5f, -size.y * 0.5f, 0));				//•½sˆÚ“®
-	rotate = glm::rotate(m, a, glm::vec3(0.0, 0.0, 1.0));										//‰ñ“]
+	rotate = glm::rotate(glm::mat4(1), a, glm::vec3(0.0,0.0,1.0));	//‰ñ“]	
 }
 
 //•½sˆÚ“®

@@ -118,13 +118,16 @@ void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum,float r,gl
 		setEnable();
 	}
 
+	glBindVertexArray(vao);
+
+
 	setDrawTextureID((unsigned char)texNum);	//テクチャーユニットを設定
 
 	// ####################### 頂点属性のUVデータを更新  #######################
 	//UVサイズからピクセルサイズを算出
 	const float sizeX = 1.0f / (float)textureID.at(texNum).size.x;
 	const float sizeY = 1.0f / (float)textureID.at(texNum).size.y;
-	
+	//std::cout<< sizeX << std::endl;
 	//左上
 	rectangleVertex[0].uv[0] = sizeX * startSize.x;
 	rectangleVertex[0].uv[1] = 1.0f - (sizeY * startSize.y);
@@ -144,16 +147,19 @@ void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum,float r,gl
 	//右下
 	rectangleVertex[5].uv[0] = sizeX * endSize.x;
 	rectangleVertex[5].uv[1] = 1.0f - (sizeY * ((endSize.y - startSize.y) + startSize.y));
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Transform_2D::VertexUV) * 6, rectangleVertex);	//頂点データを再変更	
 
 	
 	//  ################################################### 
 
-	//Transform
-	setSizeScale(glm::vec2((endSize.x - startSize.x), (endSize.y - startSize.y)));	//サイズ	
-	setScale(s);																	//スケール
-	setRotate(r);																	//回転
 
-	setTranslate(glm::vec3(pos.x + (getSizeScale().x / 2.0f), pos.y + ((getSizeScale().y) / 2.0f), 0.0f));	//平行移動
+	std::cout << windowContext->getSize().x << std::endl;
+
+	//Transform
+	setSizeScale(glm::vec2((endSize.x - startSize.x), (endSize.y - startSize.y)));			//サイズ	
+	setScale(s);																			//スケール
+	setRotate(r);																			//回転
+	setTranslate(glm::vec3(pos.x + (getSizeScale().x / 2.0f), pos.y + (getSizeScale().y / 2.0f), 0.0f));	//平行移動
 
 
 
@@ -166,8 +172,6 @@ void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum,float r,gl
 
 
 	//バインド＆描画
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Transform_2D::VertexUV) * 6, rectangleVertex);	//頂点データを再変更	
-	glBindVertexArray(vao);
 	glBindTexture(GL_TEXTURE_2D, textureID.at(texNum).ID);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 

@@ -35,7 +35,7 @@ FrameWork::Text::Text(std::shared_ptr<Window> w, const char* vert, const char* f
     //FreeTypeを初期化
     // 
     //初期化
-    FT_Library ft;
+    
     if (FT_Init_FreeType(&ft) != 0)
     {
         std::cout << "ERROR::FREETYPE: Could not init FreeType Library"<<std::endl;
@@ -43,9 +43,8 @@ FrameWork::Text::Text(std::shared_ptr<Window> w, const char* vert, const char* f
     }
 
     //フェイス作成
-    FT_Face face;
 
-    if (FT_New_Face(ft, "Font/ariali.ttf", 0, &face) != 0)
+    if (FT_New_Face(ft, "C:\\Windows\\Fonts\\meiryo.ttc", 0, &face) != 0)
     {
         std::cout<<"ERROR::FREETYPE: Failed to load font" << std::endl;
         assert(0);
@@ -57,18 +56,48 @@ FrameWork::Text::Text(std::shared_ptr<Window> w, const char* vert, const char* f
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
 
-    for (unsigned char c = 0; c < 128; c++)
+    //アルファブレンドを有効
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void FrameWork::Text::Draw(glm::vec2 pos,const char16_t* text,float scale, glm::vec3 color)
+{
+    setEnable();    //シェーダーを有効にする
+
+    pos.y = windowContext->getSize().y - pos.y - charSize;
+
+    //テクスチャをアクティブ
+    glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(vao);
+    
+    //Unform
+    setUniform3f("textColor",color);
+    setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, 0.0f, windowContext->getSize().y));
+ 
+    for (int i = 0; text[i] != '\0'; i++)
     {
+
+        unsigned int texture = 0;
+
         // load character glyph 
-        if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-        {
-            std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-            continue;
-        }
+        FT_Load_Glyph(face, FT_Get_Char_Index(face, text[i]), FT_LOAD_RENDER);
+
+
+        // now store character for later use
+        Character ch = {
+            texture,
+            glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+            glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+            (unsigned int)face->glyph->advance.x
+
+        };
+
+
         // generate texture
-        unsigned int texture;
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glGenTextures(1, &ch.textureID);
+        glBindTexture(GL_TEXTURE_2D, ch.textureID);
+
         glTexImage2D(
             GL_TEXTURE_2D,
             0,
@@ -86,51 +115,9 @@ FrameWork::Text::Text(std::shared_ptr<Window> w, const char* vert, const char* f
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         // now store character for later use
-        Character character = {
-            texture,
-            glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-            glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-            (unsigned int)face->glyph->advance.x
-           
-        };
-        Characters.insert(std::pair<char, Character>(c, character));
-    }
+       
 
 
-
-
-    //グリフ解放
-    FT_Done_Face(face);
-    FT_Done_FreeType(ft);
- 
-    //アルファブレンドを有効
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-void FrameWork::Text::Draw(glm::vec2 pos,std::string text,float scale, glm::vec3 color)
-{
-    setEnable();    //シェーダーを有効にする
-
-    pos.y = windowContext->getSize().y - pos.y - charSize;
-
-    //テクスチャをアクティブ
-    glActiveTexture(GL_TEXTURE0);
-    glBindVertexArray(vao);
-    
-    //Unform
-    setUniform3f("textColor",color);
-
-//    glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
-    setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, 0.0f, windowContext->getSize().y));
-    
-    // iterate through all characters
-    std::string::const_iterator c;
-    for (c = text.begin(); c != text.end(); c++)
-    {
-        Character ch = Characters[*c];
-
-    
         float xpos = pos.x + ch.Bearing.x * scale;
         float ypos = pos.y - (ch.Size.y - ch.Bearing.y) * scale;
 
@@ -147,19 +134,19 @@ void FrameWork::Text::Draw(glm::vec2 pos,std::string text,float scale, glm::vec3
             { xpos + w, ypos + h,   1.0f, 0.0f }
         };
         // render glyph texture over quad
-        glBindTexture(GL_TEXTURE_2D, ch.textureID);
         // update content of VBO memory
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+
         // render quad
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
+
+
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
         pos.x += ((ch.Advance >> 6) * scale); // bitshift by 6 to get value in pixels (2^6 = 64)
-        
     }
-
 
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -170,5 +157,8 @@ void FrameWork::Text::Draw(glm::vec2 pos,std::string text,float scale, glm::vec3
 
 FrameWork::Text::~Text()
 {
+    //グリフ解放
+    FT_Done_Face(face);
+    FT_Done_FreeType(ft);
 
 }

@@ -19,7 +19,7 @@ namespace FrameWork
         Text(std::shared_ptr<Window> w, const char* vert = NULL, const char* frag = NULL);		//コンストラクタ
         ~Text();	                                                                            //デストラクタ
 
-        void Draw(glm::vec2 pos, std::string text,float scale, glm::vec3 color);    //描画
+        void Draw(glm::vec2 pos, const char16_t* text,float scale, glm::vec3 color);    //描画
 
 
     private:
@@ -34,6 +34,9 @@ namespace FrameWork
         std::map<char, Character> Characters;   //文字データ
         std::shared_ptr<Window> windowContext;  //ウインドウコンテキスト
         int charSize;   //文字の大きさ(ピクセル)
+        FT_Library ft;
+        FT_Face face;
+
     };
 
 }

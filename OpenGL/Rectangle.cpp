@@ -122,7 +122,6 @@ void FrameWork::Rectangle::Draw(glm::vec2 start,glm::vec2 end,float r,glm::vec2 
 		setEnable();
 	}
 
-	glBindVertexArray(vao);
 
 	
 	if (isDefaultShader == true)
@@ -150,6 +149,8 @@ void FrameWork::Rectangle::Draw(glm::vec2 start,glm::vec2 end,float r,glm::vec2 
 	setUniformMatrix4fv("uScale", scale);
 	setUniformMatrix4fv("uViewProjection", glm::ortho(0.0f, windowContext->getSize().x, windowContext->getSize().y, 0.0f, -1.0f, 1.0f));
 	
+	glBindVertexArray(vao);
+
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);	
 
