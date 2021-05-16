@@ -15,13 +15,16 @@ namespace FrameWork
 	public:
 
 		Window(int width = 640, int height = 480, const char* title = "Hello!");	//コンストラクタ
-		virtual ~Window();															//デストラクタ
+		~Window();																	//デストラクタ
 
 		explicit operator bool();	//bool 演算子
 		void SwapBuffers()const;	//ダブルバッファリング
-
-
 		const int getKeyInput(int input);	//キー入力
+
+		//フレーム管理
+		void FrameUpdate();	//待機フレームを計算
+		void Wait();		//待機
+
 
 
 
@@ -33,10 +36,16 @@ namespace FrameWork
 	private:
 
 		GLFWwindow* const window;	//ウインドウコンテキスト
-
-
 		glm::vec2 size;				//ウインドサイズ
 		char keyBoard[256];			//キー入力
+
+
+
+
+		//フレーム管理
+		int count = -1;
+		int startCount = 0;
+		int wait  = 0;
 	};
 }
 #endif

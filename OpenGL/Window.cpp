@@ -1,4 +1,7 @@
 #include "Window.hpp"
+ #include <chrono>
+ #include <thread>
+
 
 //コンストラクタ
 FrameWork::Window::Window(int width, int height, const char* title)
@@ -48,6 +51,58 @@ void FrameWork::Window::Resize(GLFWwindow* const win, int width, int height)
 		instance->size.y = (GLfloat)height;		
 	}
 }
+
+
+//待機フレームを計算
+void FrameWork::Window::FrameUpdate()
+{
+	
+	if (count == 60)
+	{
+		int t = ((int)(glfwGetTime() * 1000.0f)) - startCount;
+
+
+
+	//	std::cout << "glfwGetTime(): " << (int)(glfwGetTime() * 1000.0f) << std::endl;
+		//std::cout << "startCount: " << startCount << std::endl;
+	//	std::cout <<"t: "<< t << std::endl;
+
+		wait = t / 60;
+		//std::cout << wait << std::endl;
+		//startCount = 0;
+		count = 0;
+		//glfwSetTime(0);
+	}
+
+
+
+	if (count == 0)
+	{
+		startCount = ((int)(glfwGetTime() * 1000.0f));
+	//	std::cout << "startCount: " << startCount << std::endl;
+
+
+	}
+
+
+	count++;
+
+}
+
+
+
+//待機
+void FrameWork::Window::Wait()
+{
+	//std::this_thread::sleep_for(std::chrono::milliseconds(wait)); // 3 ミリ秒
+
+}
+
+
+
+
+
+
 
 //ウインドウサイズを取得
 const glm::vec2 FrameWork::Window::getSize() const
@@ -112,6 +167,12 @@ FrameWork::Window::operator bool()
 		return true;
 	}
 }
+
+
+
+
+
+
 
 //ダブルバッファリング
 void FrameWork::Window::SwapBuffers()const

@@ -52,6 +52,9 @@
     <ClCompile Include="FrameWork.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="RandomNumber.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.hpp">
@@ -85,6 +88,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="FrameWork.hpp">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomNumber.hpp">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

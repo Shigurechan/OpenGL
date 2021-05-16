@@ -180,6 +180,7 @@
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="FrameWork.cpp" />
     <ClCompile Include="Line.cpp" />
+    <ClCompile Include="RandomNumber.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Circle.hpp" />
     <ClInclude Include="FrameWork.hpp" />
     <ClInclude Include="Line.hpp" />
+    <ClInclude Include="RandomNumber.hpp" />
     <ClInclude Include="Rectangle.hpp" />
     <ClInclude Include="Sprite.hpp" />
     <ClInclude Include="Shader.hpp" />

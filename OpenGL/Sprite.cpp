@@ -7,12 +7,12 @@
 #include <glm/gtc/matrix_Transform.hpp>
 #include <glm/gtx/Transform.hpp>
 
-
+#include "Texture.hpp"
 #include "Shader.hpp"
 #include "Window.hpp"
+#include <stb/stb_image.h>
 
 
-//"Shader/BasicTexture_2D.vert", "Shader/BasicTexture_2D.frag"
 //コンストラクタ
 FrameWork::Sprite::Sprite(std::shared_ptr<Window> w,const char* vert,const char* frag) : Transform_2D(),Shader()
 {
@@ -25,6 +25,8 @@ FrameWork::Sprite::Sprite(std::shared_ptr<Window> w,const char* vert,const char*
 	{
 		vert = "Shader/2D/BasicTexture_2D.vert";
 		frag = "Shader/2D/BasicTexture_2D.frag";
+		LoadShader(vert, frag);	//シェーダーロード
+
 		isDefaultShader = true;
 	}
 	else 
@@ -35,7 +37,6 @@ FrameWork::Sprite::Sprite(std::shared_ptr<Window> w,const char* vert,const char*
 
 	}
 
-	LoadShader(vert, frag);	//シェーダーロード
 	
 
 	//テクスチャ関係	
@@ -71,7 +72,7 @@ FrameWork::Sprite::Sprite(std::shared_ptr<Window> w,const char* vert,const char*
 }
 
 
-// ###################### メンバ関数 ###################### 
+// ######################################## メンバ関数 ######################################## 
 
 //テクスチャ設定
 void FrameWork::Sprite::setTexture(TextureData tex)
@@ -106,7 +107,7 @@ void FrameWork::Sprite::setTexture(TextureData tex)
 //描画するアクティブなテクスチャに指定
 void FrameWork::Sprite::setDrawTextureID(unsigned char id)
 {
-	assert(id < textureID.size());
+	//assert(id < textureID.size());
 	glActiveTexture(textureID.at(id).textureUnitNumber);	
 }
 
@@ -124,6 +125,7 @@ void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum,float r,gl
 	setDrawTextureID((unsigned char)texNum);	//テクチャーユニットを設定
 
 	// ####################### 頂点属性のUVデータを更新  #######################
+	
 	//UVサイズからピクセルサイズを算出
 	const float sizeX = 1.0f / (float)textureID.at(texNum).size.x;
 	const float sizeY = 1.0f / (float)textureID.at(texNum).size.y;
@@ -153,7 +155,7 @@ void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum,float r,gl
 	//  ################################################### 
 
 
-	std::cout << windowContext->getSize().x << std::endl;
+	//std::cout << windowContext->getSize().x << std::endl;
 
 	//Transform
 	setSizeScale(glm::vec2((endSize.x - startSize.x), (endSize.y - startSize.y)));			//サイズ	
@@ -192,15 +194,23 @@ void FrameWork::Sprite::DrawGraph(glm::vec2 pos, unsigned char texNum,float r,gl
 //デストラクタ
 FrameWork::Sprite::~Sprite()
 {
+
+	//std::cout << "デストラクタ" << std::endl;
+
 	//テクスチャーIDを開放
 	for (int i = 0; i < textureID.size(); i++)
 	{
 		glDeleteTextures(1,&textureID.at(i).ID);
-		delete[] textureID.at(i).fileData;
+	
+		stbi_image_free(textureID.at(i).fileData);
 		textureID.at(i).fileData = NULL;
+
+
+
 	}
 
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
+	
 }
 

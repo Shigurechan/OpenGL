@@ -17,11 +17,8 @@ FrameWork::Shader::Shader()
 //シェーダーをロード
 bool FrameWork::Shader::LoadShader(const char* vert, const char* frag)
 {
-	if (program != 0)
-	{
-		glDeleteShader(program);
-//		return true;
-	}
+
+	glDeleteShader(program);
 
 	program = loadProgram(vert, frag);
 
@@ -36,19 +33,23 @@ bool FrameWork::Shader::LoadShader(const char* vert, const char* frag)
 	return true;
 }
 
+
+
+
 //シェーダーをロード
 GLuint FrameWork::Shader::loadProgram(const char* vert, const char* frag)
 {
 	std::vector<GLchar> vsrc;
 	const bool vstat = ReadShaderSource(vert, vsrc);
+	
 
 	std::vector<GLchar> fsrc;
 	const bool fstat = ReadShaderSource(frag, fsrc);
-
-
+	
 	if (vstat && fstat)
 	{
 		return CreateProgram(vsrc.data(), fsrc.data());
+		
 	}
 	else {
 		//printf("あああ");
@@ -77,24 +78,22 @@ bool FrameWork::Shader::ReadShaderSource(const char* name, std::vector<GLchar>& 
 		file.close();
 		return false;
 	}
-
-	file.seekg(0L, std::ios::end);
-	GLsizei length = static_cast<GLsizei>(file.tellg());
-	buffer.resize(length + 1);
-
-	file.seekg(0L, std::ios::beg);
-	file.read(buffer.data(), length);
-	buffer[length] = '\0';
-	
-	if (file.fail() == true)
+	else
 	{
-		std::cerr << "ソースファイルを読み込めません: " << name << std::endl;
+		file.seekg(0L, std::ios::end);
+		GLsizei length = static_cast<GLsizei>(file.tellg());
+		buffer.resize(length + 1);
+
+		file.seekg(0L, std::ios::beg);
+		file.read(buffer.data(), length);
+		buffer[length] = '\0';
+
+		
+
 		file.close();
-
-		return false;
 	}
-
 	file.close();
+
 	return true;
 }
 
@@ -133,7 +132,7 @@ GLboolean FrameWork::Shader::CompileInfoLog(GLuint shader,const char* str)
 GLuint FrameWork::Shader::CreateProgram(const char* vsrc, const char* fsrc)
 {
 	const GLuint program = glCreateProgram();	//シェーダープログラムを作成
-
+	
 	//std::cout << program << std::endl;
 
 	if (vsrc != NULL)
@@ -317,5 +316,6 @@ void FrameWork::Shader::setUniformMatrix4fv(const char* name, const glm::mat4 m)
 //デストラクタ
 FrameWork::Shader::~Shader()
 {
-
+	//std::cout << "shader class デストラクタ\n" << std::endl;	
+	glDeleteProgram(program);
 }

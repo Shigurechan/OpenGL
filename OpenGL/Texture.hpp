@@ -5,8 +5,10 @@
 #include "glm/glm.hpp"
 #include "glew/include/GL/glew.h"
 
+
 namespace FrameWork
 {
+
 	//テクスチャデータ構造体
 	typedef struct
 	{
